@@ -22,11 +22,11 @@ class Simulate():
 
     # run: run simulator for groups of n_agents,
     #      with total time T and time interval dt
-    def run(self, Group, Agent, n_agents, stimulations, ties, iterations):
+    def run(self, Group, Agent, n_agents, path_length, agent_positions, ties, iterations):
 
         for i in range(iterations):
 
-            group = Group(self.n_steps, n_agents, stimulations, ties)
+            group = Group(self.n_steps, n_agents, path_length, agent_positions, ties)
             group.populate(Agent)
 
             for step in range(0, self.n_steps):

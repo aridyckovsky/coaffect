@@ -6,8 +6,6 @@ Class: Agent.
 
     Attributes:
         amp (double): Maximum arousal for agent.
-        hab_rate (double): Rate of habituation for a stimulus.
-        hab_scalar (double): Magnitude of habituation.
         act_thr (double): Activation threshold for agent to express.
         rec_thr (double): Recharge threshold fora gent to recharge arousal.
         decay_rate (double): Rate of arousal decay for agent.
@@ -19,24 +17,29 @@ import math
 
 class Agent():
 
-    def __init__(self, id, n_steps):
+    def __init__(self, id, n_steps, position):
 
         # Agent identifier
         self._id = id
+        self.position = position
 
         # Specs
         self.amp = 10.0
-        self.hab_rate = 0.7
-        self.hab_scalar = 0.0
         self.act_thr = 7.0
         self.rec_thr = 3.0
-        self.dec_rate = 1.0
+        self.dec_rate = .5
 
         # Agent memory characteristics
         self.recent_stimulations = 0 # count of recent stimulations, behaves as adaptation multiplier
         self.last_stimulation = 0 # most recent stimulation time
         self.recent_interactions = 0
         self.last_interaction = 0
+
+        #: Memory of stimuli and interactions
+        self.memory = {}
+        self.memory['stimulus'] = {}
+        self.memory['perception'] = {}
+        self.memory['expression'] = {}
 
         #: Current states
         self.current = {}
@@ -48,18 +51,41 @@ class Agent():
         self.data['arousal'] = np.zeros(n_steps + 1)
         self.data['valence'] = np.zeros(n_steps + 1)
 
-    def habituate(self, change):
-        """Habituate an agent self with some change. We expect
-            the outcome of a stimulus to be reflected at the next time step.
+    def expectation(self, stimulus):
+        """Expectation of a stimulus relative to previous experiences
+            and looming potential stimulus.
 
-        Args:
-            self (obj): Agent object.
-            change (double): Change amount.
+            Args:
+                self (dict): Agent object.
+                potential (dict): kind and known features of
+                    potential stimulus
 
         """
-        self.hab_scalar += change
 
-    def stimulate(self, stimulus):
+        #: displacement of potential stimulus relative to agent position
+        d = self.position - stimulus.position
+
+    def habituation(self, category, identifier, time):
+        """Habituation to a given stimulus category and kind from past occurrences.
+
+        Args:
+            self (dict): Agent object.
+            category (str): Category of event (i.e., stimulus, expression)
+            identifier (str): Identifier of event (i.e., stimulus, expression)
+            time (float): time of event
+
+        Returns:
+            habituation (float)
+
+        """
+        past = self.memory[category][identifier]
+        _sum = 0
+        for s in past:
+            # impacts scaled by time since past event
+            _sum += s['impact']/(time - s['time'] + 1)
+            return min(_sum, 5) / 5 # TEMP scaling from 0 to 1
+
+    def stimulate(self, stimulus, time, dt):
         """Stimulate an agent self with stimulus. We expect
             the outcome of a stimulus to be reflected at the next time step.
 
@@ -68,61 +94,119 @@ class Agent():
             stimulus (obj): Stimulus object.
 
         """
-        #: Set current arousal of self to linearly weighted stimulation
-        change = (self.amp - self.current['arousal']) * stimulus['magnitude']
-        self.current['arousal'] = change * np.power(self.hab_rate, self.hab_scalar) + self.current['arousal']
-        self.habituate(change)
+        kind = stimulus['kind']
+        strength = stimulus['strength']
+        direction = stimulus['direction']
 
-    def perceive(self, other, weight):
+        #: get habituation to calculate excitation of given stimulus
+        if kind not in self.memory['stimulus']:
+            self.memory['stimulus'][kind] = []
+            habituation = 0
+        else:
+            habituation = self.habituation('stimulus', kind, time)
+        excitation = strength * (1 - habituation) * self.amp + self.current['arousal']
+
+        #: Update current arousal and valence relative to stimulus
+        if excitation > self.amp:
+            self.current['arousal'] = self.amp
+        else:
+            self.current['arousal'] = excitation # cannot be above self.amp
+
+        self.current['valence'] = direction # TODO
+
+        #: Update memory of given stimulus kind
+        self.memory['stimulus'][kind].append({
+            'time': time, # time of stimulus event
+            'impact': strength, # impact/amount of feeling
+        })
+
+    def perceive(self, other, perception, time, dt):
         """Agent self percieves from expressing agent other with
-            weight directed other --> self. We expect the outcome of
+            weight directed self --> other. We expect the outcome of
             the perception to be reflected at the time step.
 
         Args:
             self, other (obj): Agent object.
-            weight w (double): weight value between agents b --> a.
+            perception (dict): perception details, attrs from a --> b
+            time (float): time of perception
 
         Returns:
-            double: Returns new weight.
+            dict: Returns new strength and liking factors.
 
         """
-        #scalar = 1 / (1 - np.exp(-other.current['arousal']))
 
-        #: Set current arousal of self to linearly weighted interaction stimulation
-        change = weight * (self.amp - self.current['arousal'])
-        self.current['arousal'] = change * np.power(self.hab_rate, self.hab_scalar) + self.current['arousal']
-        self.habituate(change)
+        strength = perception['strength']
+        liking = perception['liking']
+        displacement = perception['displacement']
 
-        #: Update directed weight
-        weight = (1 - weight) * (0.1) + weight
+        if other._id not in self.memory['perception']:
+            self.memory['perception'][other._id] = []
+            habituation = 0
+        else:
+            habituation = self.habituation('perception', other._id, time)
+        excitation = (0.1) * strength * (1 - habituation) * self.amp + self.current['arousal']
 
-        #: return new weight
-        return weight
+        if excitation > self.amp:
+            self.current['arousal'] = self.amp
+        else:
+            self.current['arousal'] = excitation # cannot be above self.amp
 
-    def express(self, other, weight):
+        self.current['valence'] = 0 # TODO
+
+        #: Update memory of perception with other id of agent
+        self.memory['perception'][other._id].append({
+            'time': time, # time of stimulus event
+            'impact': strength, # impact/amount of feeling
+        })
+
+        return {
+            'strength': strength,
+            'liking': liking
+        }
+
+    def express(self, other, expression, time, dt):
         """Agent self expresses toward agent other with
-            weight directed other --> self. We expect the the outcome of
+            weight directed self --> other. We expect the the outcome of
             the expression to be reflected at the next time step.
 
         Args:
             self, other (obj): Agent object.
-            weight (double): Weight value between agents b --> a.
+            expression (dict): expression details, attrs from a --> b
+            time (float): time of expression
 
         Returns:
-            double: Returns new weight.
+            float: Returns new weight.
 
         """
-        #scalar = 1 / (1 - np.exp(-self.current['arousal']))
 
-        #: Set current arousal of self to linearly weighted interaction stimulation
-        change = weight * (self.amp - self.current['arousal'])
-        self.current['arousal'] = change * np.power(self.hab_rate, self.hab_scalar) + self.current['arousal']
+        strength = expression['strength']
+        liking = expression['liking']
+        displacement = expression['displacement']
 
-        #: Update directed weight
-        weight = (1 - weight) * (0.1) + weight
+        if other._id not in self.memory['expression']:
+            self.memory['expression'][other._id] = []
+            habituation = 0
+        else:
+            habituation = self.habituation('expression', other._id, time)
+        excitation = (0.1) * strength * (1 - habituation) * self.amp + self.current['arousal']
 
-        #: return new weight
-        return weight
+        if excitation > self.amp:
+            self.current['arousal'] = self.amp
+        else:
+            self.current['arousal'] = excitation # cannot be above self.amp
+
+        self.current['valence'] = 0 # TODO
+
+        #: Update memory of perception with other id of agent
+        self.memory['expression'][other._id].append({
+            'time': time, # time of stimulus event
+            'impact': strength, # impact/amount of feeling
+        })
+
+        return {
+            'strength': strength,
+            'liking': liking
+        }
 
     def above_rec_thr(self):
         """Check if agent self is above recharge threshold at time step.
@@ -163,13 +247,11 @@ class Agent():
             self (obj): Agent object.
 
         """
-
-        decay = 1 / (1 + self.dec_rate * dt)
-        self.data['arousal'][step + 1] = decay * self.current['arousal']
+        self.data['arousal'][step + 1] = self.current['arousal']
         self.data['valence'][step + 1] = self.current['valence']
 
-        self.current['arousal'] = self.data['arousal'][step + 1]
+        #: set starting arousal and valence states for next step
+            #: TODO these should be relative to stimulus and interactions conditionally
+        decay = 1 / (1 + self.dec_rate * dt)
+        self.current['arousal'] = decay * self.data['arousal'][step + 1]
         self.current['valence'] = self.data['valence'][step + 1]
-
-        if self.hab_scalar > 0:
-            self.hab_scalar -= 0.1
