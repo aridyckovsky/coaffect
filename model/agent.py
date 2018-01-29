@@ -104,7 +104,7 @@ class Agent():
             habituation = 0
         else:
             habituation = self.habituation('stimulus', kind, time)
-        excitation = strength * (1 - habituation) * self.amp + self.current['arousal']
+        excitation = strength * (1 - habituation) * dt * self.amp + self.current['arousal']
 
         #: Update current arousal and valence relative to stimulus
         if excitation > self.amp:
@@ -144,7 +144,7 @@ class Agent():
             habituation = 0
         else:
             habituation = self.habituation('perception', other._id, time)
-        excitation = (0.1) * strength * (1 - habituation) * self.amp + self.current['arousal']
+        excitation = strength * (1 - habituation) * dt * self.amp + self.current['arousal']
 
         if excitation > self.amp:
             self.current['arousal'] = self.amp
@@ -188,7 +188,7 @@ class Agent():
             habituation = 0
         else:
             habituation = self.habituation('expression', other._id, time)
-        excitation = (0.1) * strength * (1 - habituation) * self.amp + self.current['arousal']
+        excitation = strength * (1 - habituation) * dt * self.amp + self.current['arousal']
 
         if excitation > self.amp:
             self.current['arousal'] = self.amp

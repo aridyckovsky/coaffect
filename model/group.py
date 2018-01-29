@@ -12,6 +12,7 @@ Class: Group.
 import numpy as np
 import scipy as sp
 import networkx as nx
+import random
 
 class Group():
 
@@ -22,7 +23,8 @@ class Group():
         self.n_steps = n_steps
         self.path_length = path_length
         self.agent_positions = agent_positions
-        self.stimulus_position = 0.0 # current location of "police officer"
+        self.stimulus_positions = np.random.choice(self.agent_positions, 1)
+        self.position = 0.0
 
         self.agents = dict.fromkeys(np.arange(0, n_agents), {})
         self.ties = ties # list of edges for network structure
@@ -87,13 +89,17 @@ class Group():
             stimulus (dict): Stimulus object.
 
         """
+        strength = np.random.choice([.5, .75, 1.0])
+        stimulus = {
+            'kind': 'police_steals_fruit', #classification
+            'strength': strength, # scalar of force of stimulus
+            'direction': 0.0 # direction of force of stimulus
+        }
+
         for a in self.agents:
-            if self.agents[a].position == self.stimulus_position:
-                stimulus = {
-                    'kind': 'police_steals_fruit', #classification
-                    'strength': 1.0, # scalar of force of stimulus
-                    'direction': 0.0 # direction of force of stimulus
-                }
+
+            if (self.agents[a].position == self.position):
+                print('Agent', a, 'stimulated with strength', strength)
                 self.agents[a].stimulate(stimulus, float(step) * dt, dt)
 
     def expressing_agents(self):
@@ -164,18 +170,28 @@ class Group():
             dt (float): time interval.
 
         """
-
-        #: run stimulations and interactions
-        self.stimulations(step, dt)
+        # run interactions
         self.interactions(step, dt)
+
+        #: run stimulations if any
+        for p in self.stimulus_positions:
+            if p == self.position:
+                self.stimulations(step, dt)
+
+        #: update position, reset if path is completed
+        self.position = (self.position + dt) % self.path_length
+
+        #: reset stimulus positions if path was reset
+        if self.position == 0:
+            self.stimulus_positions = np.random.choice(
+                self.agent_positions,
+                np.random.choice(range(0, self.n_agents))
+            )
 
         for i in self.agents:
             self.agents[i].update(step, dt)
 
         #: update expressing agents for interactions in next step
         self.expressing_agents()
-
-        #: reset stimulus position if path is completed
-        self.stimulus_position = (self.stimulus_position + dt) % self.path_length
 
         self.data['group'][step + 1] = len(self.current['expressing'])
