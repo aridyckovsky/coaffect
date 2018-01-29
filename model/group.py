@@ -23,14 +23,26 @@ class Group():
         self.n_steps = n_steps
         self.path_length = path_length
         self.agent_positions = agent_positions
-        self.stimulus_positions = np.random.choice(self.agent_positions, 1)
-        self.position = 0.0
 
         self.agents = dict.fromkeys(np.arange(0, n_agents), {})
         self.ties = ties # list of edges for network structure
 
         self.current = {}
         self.current['expressing'] = {}
+        self.current['stimulus'] = {}
+
+        self.current['stimulus'] = {}
+        self.current['stimulus'][0] = {
+            'kind': 'harassment', #classification
+            'position': 0,
+            'duration': 1.0, # duration of stimulus effect
+            'strength': 1.0, # scalar of force of stimulus
+            'direction': 0.0 # direction of force of stimulus
+        }
+
+        self.history = {}
+        self.history['stimulus'] = []
+
         self.data = {}
         self.data['group'] = np.zeros(n_steps + 1) # records of states of collective
 
@@ -86,21 +98,54 @@ class Group():
 
         Args:
             self (dict): Group object.
-            stimulus (dict): Stimulus object.
+            step (int): time step
+            dt (float): time increment
 
         """
-        strength = np.random.choice([.5, .75, 1.0])
-        stimulus = {
-            'kind': 'police_steals_fruit', #classification
-            'strength': strength, # scalar of force of stimulus
-            'direction': 0.0 # direction of force of stimulus
-        }
 
-        for a in self.agents:
+        stimuli = self.current['stimulus']
+        removals = []
 
-            if (self.agents[a].position == self.position):
-                print('Agent', a, 'stimulated with strength', strength)
-                self.agents[a].stimulate(stimulus, float(step) * dt, dt)
+        #: iterate through each stimulus in current situation
+        for _id in stimuli:
+
+            stimulus = stimuli[_id]
+            effects = False
+
+            #: apply stimulus to agents at stimulus position
+            for a in self.agents:
+                if (self.agents[a].position == stimulus['position']):
+
+                    self.agents[a].stimulate(stimulus, _id, step, dt)
+                    effects = True
+
+            #: decrement duration of occurring stimulus by time increment
+            if effects:
+                stimulus['duration'] -= dt
+            #: otherwise incremenet position by a positional step
+            else:
+                stimulus['position'] += 1
+
+            #: add to history and remove stimulus if duration is 0 or less
+            if stimulus['duration'] <= 0:
+                removals.append(_id)
+
+        #: add to history and remove stimulus if duration is 0 or less
+        for _id in removals:
+            self.history['stimulus'].append(self.current['stimulus'][_id])
+            del self.current['stimulus'][_id]
+        #: copy updated stimulus to current situation memory
+        else:
+            self.current['stimulus'][_id] = stimulus
+
+    def reverberations(self):
+        """Reverberated stimulations for small world situations.
+
+        Args:
+            self (dict): Group object.
+
+        """
+        pass
 
     def expressing_agents(self):
         """Get list of expressing agents from group self.
@@ -174,19 +219,7 @@ class Group():
         self.interactions(step, dt)
 
         #: run stimulations if any
-        for p in self.stimulus_positions:
-            if p == self.position:
-                self.stimulations(step, dt)
-
-        #: update position, reset if path is completed
-        self.position = (self.position + dt) % self.path_length
-
-        #: reset stimulus positions if path was reset
-        if self.position == 0:
-            self.stimulus_positions = np.random.choice(
-                self.agent_positions,
-                np.random.choice(range(0, self.n_agents))
-            )
+        self.stimulations(step, dt)
 
         for i in self.agents:
             self.agents[i].update(step, dt)
