@@ -31,7 +31,6 @@ class Group():
         self.current['expressing'] = {}
         self.current['stimulus'] = {}
 
-        self.current['stimulus'] = {}
         self.current['stimulus'][0] = {
             'kind': 'harassment', #classification
             'position': 0,
