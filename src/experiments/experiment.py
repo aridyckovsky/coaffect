@@ -4,7 +4,7 @@
 Core Object(s):
     Experiment
 
-* Note: some inspiration from Project Mesa's base model object
+Note: Inspiration taken from Project Mesa's base model object.
 
 """
 
@@ -18,10 +18,11 @@ class Experiment(object):
 
     """
 
-    def __init__(self, seed=None):
+    def __init__(self, _id, seed=None):
         """ Initialize an experiment with optional seed parameter.
 
         Args:
+            _id: unique integer identifier
             seed: seed for random number generation
 
         Attrs:
@@ -29,7 +30,7 @@ class Experiment(object):
             schedule: schedule object
 
         """
-        super().__init__(model)
+        super().__init__(_id)
         self.running = True
         self.schedule = None
 
