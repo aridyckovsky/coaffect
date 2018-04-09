@@ -1,4 +1,4 @@
-""" Say something about record class.
+""" Create, collect, edit, and delete records of data for and from experiments.
 
 Core Object(s):
     Record
@@ -11,13 +11,13 @@ import random
 import pandas
 import collections
 
-class Network(object):
-    """ Base class for Network.
+class Record(object):
+    """ Base class for Record.
 
     """
 
     def __init__(self, experiment, _id):
-        """ Initialize a NetworkX network of participant objects.
+        """ Initialize a Record object for a given experiment.
 
         Args:
             model: instance of model
