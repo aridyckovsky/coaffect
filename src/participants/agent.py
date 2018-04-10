@@ -14,23 +14,34 @@ class Agent(object):
 
     """
 
-    def __init__(self, _id, experiment):
+    def __init__(self, unique_id, experiment):
         """ Initialize an agent with unique id.
 
         Args:
-            _id: unique integer identifier
-            experiment: reference to experiment agent is a participant in
+            unique_id: unique integer identifier
+            experiment: reference to experiment instance
+
+        Attrs:
+            _unique_id (int)
+            _experiment (dict)
+            _state (dict) ... or?
 
         """
-        #super().__init__(_id, experiment) #TODO: is this right?
-        self._id = _id
-        self._state = [] # TODO put actual empty state here...maybe vector? maybe dict?
+        self._unique_id = unique_id
+        self._experiment = experiment
+        self._state = [] # TODO put actual empty "state" here...maybe vector? maybe dict?
 
     def get_id(self):
         """ Get agent's unique identifier.
 
         """
-        return self._id
+        return self.unique_id
+
+    def get_experiment(self):
+        """ Get agent's experiment information, if available.
+
+        """
+        return self._experiment
 
     def get_state(self):
         """ Get agent's current state.
@@ -38,9 +49,27 @@ class Agent(object):
         """
         return self._state
 
-    def step(self):
-        """ Step method required for all agents. Override to use in
-            practice with specific schedules/experiments.
+    def _set_state(self):
+        """ Set agent's current state. Limited to access by subclasses,
+            not public method.
+
+        Requirements: Define in subclasses.
 
         """
         pass
+
+    def step(self):
+        """ Step method required for all agents.
+
+        Requirements: Define in subclasses.
+
+        """
+        pass
+
+class EmotionalAgent(Agent):
+    """ Create emotional agent by extending and overriding base class Agent.
+
+    """
+
+    def __init__(self, unique_id, experiment):
+        super().__init__(unique_id, experiment)
