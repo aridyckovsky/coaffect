@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
 """ Coaffect Participants Module
 
-Core Objects:
-    Agent
-    Group
+Publicly Accessible Classes:
+    EmotionalAgent
 
 """
 
 import datetime
 
-from .group import Group
-from .agent import Agent
+#from .group import Group
+from .agent import EmotionalAgent
 
-__all__ = ["Group", "Agent"]
+__all__ = ["EmotionalAgent"]
 
 __title__ = 'coaffect'
 __version__ = '0.1.0'
