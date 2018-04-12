@@ -1,16 +1,20 @@
 # -*- coding: utf-8 -*-
 """ Coaffect Experiments Module
 
-Core Objects:
+Base Class:
     Experiment
+
+Subclasses:
+    Simulation
 
 """
 
 import datetime
 
-from .experiment import Experiment
+from .base import Experiment
+from .simulation import Simulation
 
-__all__ = ["Experiment"]
+__all__ = ["Experiment", "Simulation"]
 
 __title__ = 'coaffect'
 __version__ = '0.1.0'

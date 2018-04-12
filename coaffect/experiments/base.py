@@ -4,6 +4,9 @@
 Base Class:
     Experiment
 
+Subclasses:
+    Simulation (virtual experiment)
+
 Note: Inspiration taken from Project Mesa's base model object.
 
 """
