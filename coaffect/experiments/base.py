@@ -16,8 +16,8 @@ import datetime
 import numpy
 import random
 
-from environments.environment import Environment
-from records.record import Record
+from ..environments.base import Environment
+from ..records.base import Record
 
 class Experiment(object):
     """ Base class for Experiment framework.

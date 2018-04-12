@@ -49,7 +49,7 @@ class Environment(object):
         """ Return name, if given, else pass.
 
         """
-        return self._name if self._name else pass
+        return self._name if self._name else 'No Name' 
 
     def step(self):
         """ Step method required for all environments. Override to use in

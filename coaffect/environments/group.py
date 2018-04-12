@@ -71,7 +71,7 @@ class Group(object):
         """ Return name, if given, else pass.
 
         """
-        return self._name if self._name else pass
+        return self._name if self._name else 'No Name'
 
     def _set_members(self, members_to_remove, new_members):
         """ Set list of members. First remove old members, then add new members.

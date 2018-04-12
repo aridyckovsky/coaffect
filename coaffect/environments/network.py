@@ -35,5 +35,5 @@ class Network(object):
         """
         if options:
             pass
-        else
+        else:
             return self._graph

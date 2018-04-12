@@ -12,7 +12,8 @@ Publicly Accessible Classes:
 
 import datetime
 
-from .environment import Environment
+from .base import Environment
+
 from .space import Space
 from .time import Time
 from .network import Network
@@ -20,7 +21,7 @@ from .group import Group
 
 __all__ = ["Environment", "Space", "Time", "Network", "Group"]
 
-__title__ = 'coaffect'
+__title__ = 'environments'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

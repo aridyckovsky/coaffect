@@ -9,12 +9,12 @@ Publicly Accessible Classes:
 
 import datetime
 
-from .agent import Agent
-from .agent import EmotionalAgent
+from .base import Agent
+from .emotional import EmotionalAgent
 
 __all__ = ["Agent", "EmotionalAgent"]
 
-__title__ = 'coaffect'
+__title__ = 'participants'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

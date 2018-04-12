@@ -11,13 +11,23 @@ Publicly Accessible Classes:
 
 """
 
+#: General dependencies
 import datetime
 
-from .participants import Agent
-from .participants import EmotionalAgent
+#: Experiments
+from .experiments.base import Experiment
+from .experiments.simulation import Simulation
 
-from .environments import Environment
-from .environments import Group
+#: Participants
+from .participants.base import Agent
+from .participants.emotional import EmotionalAgent
+
+#: Environments
+from .environments.base import Environment
+from .environments.group import Group
+
+#: Records
+from .records.base import Record
 
 __all__ = [
     "Agent",

@@ -12,7 +12,7 @@ from .visual import Visual
 
 __all__ = ["Visual"]
 
-__title__ = 'coaffect'
+__title__ = 'visuals'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

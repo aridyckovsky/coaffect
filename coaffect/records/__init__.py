@@ -8,11 +8,11 @@ Base Class:
 
 import datetime
 
-from .record import Record
+from .base import Record
 
 __all__ = ["Record"]
 
-__title__ = 'coaffect'
+__title__ = 'records'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 
