@@ -13,18 +13,20 @@ import datetime
 import numpy
 import random
 
-from .environment import Environment
+from environments.environment import Environment
+from records.record import Record
 
 class Experiment(object):
     """ Base class for Experiment framework.
 
     """
 
-    def __init__(self, _id, seed=None):
+    #TODO: add 1-step iterator for experiment_ids that logs to records?
+    def __init__(self, experiment_id, seed=None):
         """ Initialize an experiment with optional seed parameter.
 
         Args:
-            _id: unique integer identifier
+            experiment_id: integer identifier for experiment
             seed: seed for random number generation
 
         Attrs:
@@ -32,23 +34,29 @@ class Experiment(object):
             schedule: schedule object
 
         """
-        super().__init__(_id)
-        self.running = True
-        self.schedule = None
+        self._experiment_id = experiment_id
+        self._running = True
+        self._schedule = None
 
         # Handle seed for random and numpy random number generation
         if seed is None:
-            self.seed = dt.datetime.now()
+            self.__seed = dt.datetime.now()
         else:
-            self.seed = seed
+            self.__seed = seed
         random.seed(seed)
         numpy.random.seed(seed)
+
+    def get_id(self):
+        return self._experiment_id
+
+    def is_running(self):
+        return self._running
 
     def run(self):
         """ Run experiment
 
         """
-        while self.running:
+        while self.is_running():
             self.step()
 
     def step(self):

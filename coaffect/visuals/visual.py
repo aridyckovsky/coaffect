@@ -1,19 +1,16 @@
-# -*- coding: utf-8 -*-
-""" Coaffect Visuals Module
+""" Create and edit visuals for demonstration of progress during and
+    analysis of experiments.
 
-Core Objects:
-    Visuals
+Base Class:
+    Visual
 
 """
 
+#: Dependencies
 import datetime
+import matplotlib
 
-from .visual import Visual
+class Visual(object):
 
-__all__ = ["Visual"]
-
-__title__ = 'coaffect'
-__version__ = '0.1.0'
-__license__ = 'MIT'
-
-__copyright__ = 'Copyright %s Stanford Collective Emotion Team' % datetime.date.today().year
+    def __init__(self):
+        pass

@@ -36,7 +36,7 @@ class Environment(object):
         self._unique_id = unique_id
         self._name = name
 
-    def get_unique_id(self):
+    def get_id(self):
         """ Return unique_id.
 
         """

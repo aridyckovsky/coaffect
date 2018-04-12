@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """ Coaffect Records Module
 
-Core Objects:
+Base Class:
     Record
 
 """

@@ -43,7 +43,7 @@ class Group(object):
 
         self._state = {}
 
-    def get_unique_id(self):
+    def get_id(self):
         """ Return unique_id.
 
         """

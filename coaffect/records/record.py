@@ -1,7 +1,7 @@
 """ Create, collect, edit, and delete records of data for and from experiments.
 
-Core Object(s):
-    Record
+Base Class:
+    Record (extends collections.defaultdict)
 
 """
 
@@ -9,22 +9,25 @@ Core Object(s):
 import numpy
 import random
 import pandas
-import collections
+from collections import defaultdict
 
-class Record(object):
+class Record(defaultdict):
     """ Base class for Record.
 
     """
 
-    def __init__(self, experiment, _id):
+    def __init__(self, experiment):
         """ Initialize a Record object for a given experiment.
 
         Args:
-            model: instance of model
+            experiment: instance of experiment
 
         Attrs:
-            _id: a unique identifier for the network
+            _experiment (obj)
 
         """
-        super().__init__(experiment)
-        self._id = _id
+        self._experiment = experiment
+        self._data = []
+
+    def get_data(self):
+        return self._data

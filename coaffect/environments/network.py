@@ -25,7 +25,7 @@ class Network(object):
         self._unique_id = unique_id
         self._graph = nx.DiGraph() # network structure
 
-    def get_unique_id(self):
+    def get_id(self):
         return self._unique_id
 
     def get_graph(self, options):
