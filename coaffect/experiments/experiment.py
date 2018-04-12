@@ -1,7 +1,7 @@
 """ Create, run, import and export data with Experiment class for
     various agent-based network models.
 
-Core Object(s):
+Base Class:
     Experiment
 
 Note: Inspiration taken from Project Mesa's base model object.

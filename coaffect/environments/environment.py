@@ -11,6 +11,9 @@ Subclasses:
 import numpy
 import random
 
+# TODO: `mv environment.py base.py`, and similar for all base files. For import,
+# only import extensions or concrete base classes (Time might be a concrete base)
+
 from .space import Space
 from .time import Time
 from .network import Network
