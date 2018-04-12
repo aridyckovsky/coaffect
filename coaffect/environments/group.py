@@ -16,28 +16,28 @@ class Group(object):
 
     """
 
-    def __init__(self, unique_id, environment, members=[], name=''):
-        """ Initialize a uniquely identified group of members in an environment,
+    def __init__(self, unique_id, experiment, members=[], name=''):
+        """ Initialize a uniquely identified group of members in an experiment,
             with the option to name it. Note that state is the 'collective state'
             of members, and members in a Group object are given as unique_ids of
             the actual members stored elsewhere.
 
         Args:
             unique_id (int): unique integer identifier
-            environment (obj): reference to environment group is in
+            experiment (obj): reference to experiment group is in
             members (list): unique_ids of agents to include in group, if any
             name (str): string identifier for convenient reference, if given
 
         Attrs:
             _unique_id (int)
-            _environment (obj)
+            _experiment (obj)
             _members (list)
             _name (str)
             _state (dict)
 
         """
         self._unique_id = unique_id
-        self._environment = environment
+        self._experiment = experiment
         self._members = members
         self._name = name
 
@@ -49,11 +49,11 @@ class Group(object):
         """
         return self._unique_id
 
-    def get_environment(self):
-        """ Return environment.
+    def get_experiment(self):
+        """ Return experiment.
 
         """
-        return self._environment
+        return self._experiment
 
     def get_members(self):
         """ Return current members.

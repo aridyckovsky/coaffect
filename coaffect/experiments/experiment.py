@@ -13,6 +13,8 @@ import datetime
 import numpy
 import random
 
+from .environment import Environment
+
 class Experiment(object):
     """ Base class for Experiment framework.
 

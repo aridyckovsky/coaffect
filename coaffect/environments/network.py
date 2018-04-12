@@ -1,6 +1,6 @@
 """ Say something about network class.
 
-Core Object(s):
+Base Class:
     Network
 
 """
@@ -15,14 +15,25 @@ class Network(object):
 
     """
 
-    def __init__(self, _id, experiment):
+    def __init__(self, unique_id):
         """ Initialize a NetworkX network of participant objects.
 
         Args:
             _id: unique integer identifier for the network
-            experiment: reference to experiment network is a participant in
 
         """
-        super().__init__(_id, experiment)
-        self._id = _id
-        self.graph = nx.DiGraph() # network structure
+        self._unique_id = unique_id
+        self._graph = nx.DiGraph() # network structure
+
+    def get_unique_id(self):
+        return self._unique_id
+
+    def get_graph(self, options):
+        """ Return the graph of a network. Use options to return graph in
+            particular object type.
+
+        """
+        if options:
+            pass
+        else
+            return self._graph

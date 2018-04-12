@@ -11,6 +11,11 @@ Subclasses:
 import numpy
 import random
 
+from .space import Space
+from .time import Time
+from .network import Network
+from .group import Group
+
 class Environment(object):
     """ Base class for Environment object.
 
