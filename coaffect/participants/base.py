@@ -6,6 +6,15 @@ Abstract Base Class:
 Concrete Extended Class(es):
     EmotionalAgent
 
+NOTES:
+    - Simulation: One police officer will visit a street with fruit stand owners
+        for two weeks (14 days = 14 opportunities to steal), come for 1 hour,
+        during 1 hour, can steal fruit from a single fruit stand during that hour,
+        at any point in that hour
+    - Habituation: decrease "effective baseline" of arousal over course of days
+    - Regulation: up- and down-regulation based on habituation and agent's
+        rated ability to regulate, as well as social "help" to regulate from others
+
 """
 
 #: Dependencies
