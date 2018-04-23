@@ -21,27 +21,30 @@ NOTES:
 import numpy
 import random
 
+from ..states.base import State
+
 class Agent(object):
     """ Base class for Agent object.
 
     """
 
-    def __init__(self, unique_id, experiment):
+    def __init__(self, unique_id, experiment, measures={}):
         """ Initialize an agent with unique id and experiment agent is part of.
 
         Args:
             unique_id: unique integer identifier
             experiment: reference to experiment instance
+            measures: dict mapping string labels to data types
 
         Attrs:
             _unique_id (int)
             _experiment (dict)
-            _state (dict) ... or?
+            _state (dict, as defined in State)
 
         """
         self._unique_id = unique_id
         self._experiment = experiment
-        self._state = [] # TODO put actual empty "state" here...maybe vector? maybe dict?
+        self._state = State(measures)
 
     def get_id(self):
         """ Get agent's unique identifier.

@@ -19,15 +19,15 @@ class History(defaultdict):
 
     """
 
-    def __init__(self, experiment, labels):
+    def __init__(self, experiment, states):
         """ Initialize a History object for a given experiment.
 
         Args:
             experiment (obj): instance of experiment
-            labels ([str]): labels of records
+            states (dict): dict of dicts
 
         Attrs:
-            _experiment (obj): experiement reference object
+            _experiment (obj): experiment reference object
             _data (obj): the history's data itself
             __created_at (datestr): timestamp for record creation
             __last_accessed_at (datestr): timestemp for last access
@@ -69,13 +69,16 @@ class History(defaultdict):
     def get_labels(self):
         pass
 
-    def modify(self, items):
-        for item in items:
+    def modify(self, record, change):
+        self._data[record.keys()[0]]
 
+    def bulk_modify(self, records, changes):
+        for record in records:
+            self.modify(record, changes[record])
 
-    def insert(self, item):
-        """ Insert a new item into the record's dataset.
+    def insert(self, record):
+        """ Insert a new record into the history's dataset.
 
         """
         self.__set_last_modify()
-        self.__data.append(item)
+        self.__data.append(record)
