@@ -14,28 +14,66 @@ import random
 import pandas
 from collections import defaultdict
 
-class History(defaultdict):
+class History(object):
     """ Base class for Record.
+
+    An example of a history object is given by `example_history` below,
+    where each list element is indexed by a time step and each element
+    is a dict of dicts (dict, where each measurable type, like 'participants',
+    is associated with a dict representing the agent-state pairs saved at
+    that time step).
+
+    example_history = [
+
+        {
+
+            'participants': {
+                'a0': {
+                    'arousal': 0,
+                    'position': (1, 0, 0),
+                    'identifications': {
+                        'g0': 0.73
+                    }
+                },
+                ...
+            },
+
+            'groups': {
+                'g0': {
+                    'arousal': 0
+                },
+                'g1': {
+                    'arousal': .24
+                }
+            },
+
+            ''
+
+        },
+        ...
+
+    ]
 
     """
 
-    def __init__(self, experiment, states):
+    def __init__(self, experiment, record, steps=0):
         """ Initialize a History object for a given experiment.
 
         Args:
             experiment (obj): instance of experiment
-            states (dict): dict of dicts
+            record (dict): dict of dict of states
+            steps (int): number of steps, default to 0, empty history
 
         Attrs:
             _experiment (obj): experiment reference object
-            _data (obj): the history's data itself
+            _data (list): the history's data itself over steps + 1 entries
             __created_at (datestr): timestamp for record creation
             __last_accessed_at (datestr): timestemp for last access
             __last_modified_at (datestr): timestemp for last edit
 
         """
         self._experiment = experiment
-        self._data = []
+        self._data = [record for s in range(0, steps)]
 
         #: Private attributes
         self.__created_at = datetime.now()
