@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
-""" Coaffect Participants Module
+""" Coaffect Schedules Module
 
 Publicly Accessible Classes:
-    Agent
-    EmotionalAgent
+    Schedule
+    SimpleSchedule
 
 """
 
 import datetime
 
-from .base import Agent
-from .emotional import EmotionalAgent
+from .base import Schedule
+from .unit import UnitSchedule
 
-__all__ = ["Agent", "EmotionalAgent"]
+__all__ = ["Schedule", "UnitSchedule"]
 
-__title__ = 'participants'
+__title__ = 'schedules'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

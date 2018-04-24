@@ -12,14 +12,16 @@ Publicly Accessible Classes:
 
 import datetime
 
+""" The following are imported into environment.py directly
+
+from .features.space import Space
+from .features.network import Network
+
+"""
+
 from .base import Environment
 
-from .space import Space
-from .time import Time
-from .network import Network
-from .group import Group
-
-__all__ = ["Environment", "Space", "Time", "Network", "Group"]
+__all__ = ["Environment"]
 
 __title__ = 'environments'
 __version__ = '0.1.0'

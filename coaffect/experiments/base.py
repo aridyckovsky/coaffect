@@ -17,7 +17,7 @@ import numpy
 import random
 
 from ..environments.base import Environment
-from ..records.base import Record
+from ..history.base import History
 
 class Experiment(object):
     """ Base class for Experiment framework.
@@ -25,21 +25,25 @@ class Experiment(object):
     """
 
     #TODO: add 1-step iterator for experiment_ids that logs to records?
-    def __init__(self, experiment_id, seed=None):
+    def __init__(self, experiment_id, schedule, seed=None):
         """ Initialize an experiment with optional seed parameter.
 
         Args:
             experiment_id: integer identifier for experiment
+            schedule: schedule instance
             seed: seed for random number generation
 
         Attrs:
-            running: boolean indicator to signal whether experiment is in progress
-            schedule: schedule object
+            _experiment_id: unique id
+            _running: boolean indicator to signal whether experiment is in progress
+            _schedule: schedule object
 
         """
+
         self._experiment_id = experiment_id
-        self._running = True
-        self._schedule = None
+        self._schedule = schedule
+
+        self._running = False
 
         # Handle seed for random and numpy random number generation
         if seed is None:
@@ -49,7 +53,7 @@ class Experiment(object):
         random.seed(seed)
         numpy.random.seed(seed)
 
-    def get_id(self):
+    def get_unique_id(self):
         return self._experiment_id
 
     def is_running(self):
@@ -59,8 +63,12 @@ class Experiment(object):
         """ Run experiment
 
         """
+        self._running = True
         while self.is_running():
             self.step()
+
+    def __iter__(self):
+        return self
 
     def step(self):
         """ Step method required for all experiments. Override to use in
@@ -68,4 +76,4 @@ class Experiment(object):
             `self.running`
 
         """
-        pass
+        self._schedule.next()
