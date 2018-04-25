@@ -8,8 +8,10 @@ Base Class:
 
 import numpy
 
-class State(object):
-    """ Base class for State.
+from ..utils.tracking_object import TrackingObject
+
+class State(TrackingObject):
+    """ Base class for State. Inherits TrackingObject's attributes.
 
     """
     def __init__(self, measures):
@@ -22,36 +24,23 @@ class State(object):
             _measures (dict)
 
         """
+        super().__init__()
         self._measures = {l: d for (l,d) in measures.items()}
+
+    def _set_measure(self, feature, value):
+        self._measures[feature] = value
+        self._set_last_modify()
+
+    def _set_state(self, measures):
+        """ Convenient setter for updating a state with multiple measures at once.
+
+        """
+        for m in measures:
+            self._set_measure(m, measures[m])
 
     def get_measures(self):
         """ Get all measures from the state in standard format.
 
         """
+        self._set_last_access()
         return self._measures
-
-    def get_measure_by_label(self, label):
-        """ Get a singular measure by its label.
-
-        Args:
-            label (str)
-
-        """
-        try:
-            return self._measures[label]
-        except KeyError:
-            raise
-
-    def _set_measure_by_label(self, label, new_val):
-        """ Set a singular measure by its label.
-
-        Args:
-            label (str)
-            new_val (type relative to old_val)
-        """
-        try:
-            self._measures[label] = new_val
-        except KeyError:
-            raise
-        except ValueError:
-            raise

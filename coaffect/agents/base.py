@@ -1,9 +1,9 @@
 """ Create an Agent as a participant for experiment(s).
 
-Abstract Base Class:
+Base Class:
     Agent
 
-Concrete Extended Class(es):
+Subclass(es):
     EmotionalAgent
 
 NOTES:
@@ -46,7 +46,7 @@ class Agent(object):
         self._experiment = experiment
         self._state = State(measures)
 
-    def get_id(self):
+    def get_unique_id(self):
         """ Get agent's unique identifier.
 
         """
@@ -65,14 +65,18 @@ class Agent(object):
         """
         return self._state.get_measures()
 
-    def _set_state(self):
+    def get_feature(self, feature):
+        return self.get_state()[feature]
+
+    def _set_state(self, measure):
         """ Set agent's current state. Limited to access by subclasses,
             not public method.
 
-        Requirements: Define in subclasses.
+        Args:
+            measure (dict): Single measure to update (e.g., {'arousal': 0})
 
         """
-        pass
+        self._state._set_measures(measure)
 
     def step(self):
         """ Step method required for all agents.
@@ -81,38 +85,3 @@ class Agent(object):
 
         """
         pass
-
-class EmotionalAgent(Agent):
-    """ Create emotional agent by extending and overriding base class Agent.
-
-    """
-
-    def __init__(self, unique_id, experiment):
-        """ Extended subclass of Agent for an emotional agent for use in
-            real and virtual experiments.
-
-        Args:
-
-        Attrs:
-
-        """
-        super().__init__(unique_id, experiment)
-
-    def perceive(self, situation):
-        """ Perceive a situation in the surrounding environment, including
-            social and spatial factors.
-
-        Args:
-            situation
-
-        """
-        try:
-            self._set_state(situation)
-        except ValueError:
-            raise ValueError('Uh Oh!')
-        else:
-            pass
-
-    def express(self):
-        curr = self.get_state()
-        return curr

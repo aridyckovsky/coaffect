@@ -8,14 +8,14 @@ Base Class:
 """
 
 #: Dependencies
-import datetime
 import numpy
 import random
 import pandas
-from collections import defaultdict
 
-class History(object):
-    """ Base class for Record.
+from ..utils.tracking_object import TrackingObject
+
+class History(TrackingObject):
+    """ Base class for History. Extends TrackingObject by default.
 
     An example of a history object is given by `example_history` below,
     where each list element is indexed by a time step and each element
@@ -67,31 +67,22 @@ class History(object):
         Attrs:
             _experiment (obj): experiment reference object
             _data (list): the history's data itself over steps + 1 entries
-            __created_at (datestr): timestamp for record creation
-            __last_accessed_at (datestr): timestemp for last access
-            __last_modified_at (datestr): timestemp for last edit
 
         """
+        #: inherit trackable object attributes
+
+        super().__init__()
         self._experiment = experiment
-        self._data = [record for s in range(0, steps)]
-
-        #: Private attributes
-        self.__created_at = datetime.now()
-        self.__last_accessed_at = datetime.now()
-        self.__last_modified_at = datetime.now()
-
-    def __set_last_access(self):
-        self.__last_accessed_at = datetime.now()
-
-    def __set_last_modify(self):
-        self.__last_modified_at = datetime.now()
+        #: TODO use schedule associated with experiment to determine length
+        # of history data list
+        self.__data = [record for s in range(0, steps)]
 
     def get_data(self):
         """ Get all recorded data from this history.
 
         """
-        self.__set_last_access()
-        return self._data
+        self._set_last_access()
+        return self.__data
 
     def get_record(self, index):
         """ Get the current record in full, or with options.
@@ -108,7 +99,8 @@ class History(object):
         pass
 
     def modify(self, record, change):
-        self._data[record.keys()[0]]
+        self.__data[record.keys()[0]]
+        self._set_last_modify()
 
     def bulk_modify(self, records, changes):
         for record in records:
@@ -118,5 +110,5 @@ class History(object):
         """ Insert a new record into the history's dataset.
 
         """
-        self.__set_last_modify()
         self.__data.append(record)
+        self._set_last_modify()
