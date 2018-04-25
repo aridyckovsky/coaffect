@@ -22,7 +22,7 @@ class State(object):
             _measures (dict)
 
         """
-        self._measures = {label: data_structure for (label, data_structure) in measures}
+        self._measures = {l: d for (l,d) in measures.items()}
 
     def get_measures(self):
         """ Get all measures from the state in standard format.

@@ -3,7 +3,7 @@
 
 Publicly Accessible Classes:
     Schedule
-    SimpleSchedule
+    UnitSchedule
 
 """
 

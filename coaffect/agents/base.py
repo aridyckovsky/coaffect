@@ -59,10 +59,11 @@ class Agent(object):
         return self._experiment
 
     def get_state(self):
-        """ Get agent's current state.
+        """ Get agent's current state be accessing State's
+            `get_measures` method.
 
         """
-        return self._state
+        return self._state.get_measures()
 
     def _set_state(self):
         """ Set agent's current state. Limited to access by subclasses,

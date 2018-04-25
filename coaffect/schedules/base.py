@@ -5,8 +5,7 @@ Base Class:
     Schedule
 
 Subclasses:
-    SimpleSchedule
-    RandomSchedule
+    UnitSchedule
 
 """
 
@@ -16,7 +15,7 @@ import numpy
 import random
 
 class Schedule(object):
-    """ Base class for Time.
+    """ Base class for Schedule.
 
     """
 
@@ -86,6 +85,7 @@ class Schedule(object):
         _start = self._start
         self._state = _start
 
+    #: Set Attributes
     def _set_resolution(self, res):
         """ Set resolution in seconds.
 
@@ -95,6 +95,7 @@ class Schedule(object):
         """
         self._resolution = res
 
+    #: Get Attributes
     def get_state(self):
         return self._state
 
