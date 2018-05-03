@@ -1,18 +1,24 @@
 # -*- coding: utf-8 -*-
-""" Coaffect States Module
+""" Coaffect Spaces Module
 
 Base Class:
-    State
+    Space
+
+Subclasses:
+    Space1D
+    Space2D
+    Space3D
 
 """
 
 import datetime
 
-from .base import State
+from .base import Space
+from .space_1d import Space1D
 
-__all__ = ["State"]
+__all__ = ["Space", "Space1D"]
 
-__title__ = 'states'
+__title__ = 'spaces'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

@@ -11,8 +11,11 @@ Subclasses:
 import numpy
 import random
 
-class Group(object):
-    """ Base class for Group object.
+from ..utils.tracking_object import TrackingObject
+from ..utils.state import State
+
+class Group(TrackingObject):
+    """ Base class for Group object. Inherits TrackingObject's attributes.
 
     """
 
@@ -36,14 +39,16 @@ class Group(object):
             _state (dict)
 
         """
+        super().__init__()
+
         self._unique_id = unique_id
         self._experiment = experiment
         self._members = members
         self._name = name
 
-        self._state = {}
+        self._state = State()
 
-    def get_id(self):
+    def get_unique_id(self):
         """ Return unique_id.
 
         """

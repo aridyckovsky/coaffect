@@ -10,9 +10,16 @@ import datetime
 import numpy
 import scipy
 
-#: Time and Schedules
+#: Schedules
 from .schedules.base import Schedule
 from .schedules.unit import UnitSchedule
+
+#: Networks
+from .networks.base import Network
+
+#: Spaces
+from .spaces.base import Space
+from .spaces.space_1d import Space1D
 
 #: Environments
 from .environments.base import Environment
@@ -31,14 +38,13 @@ from .experiments.simulation import Simulation
 #: History
 from .history.base import History
 
-#: States
-from .states.base import State
-
 __all__ = [
     "Schedule",
     "SimpleSchedule",
 
     "Environment",
+    "Network",
+    "Space",
 
     "Agent",
     "EmotionalAgent",

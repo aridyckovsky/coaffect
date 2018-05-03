@@ -10,7 +10,9 @@ import networkx as nx
 import numpy as np
 import random
 
-class Network(object):
+from ..utils.tracking_object import TrackingObject
+
+class Network(TrackingObject):
     """ Base class for Network.
 
     """
@@ -22,6 +24,7 @@ class Network(object):
             _id: unique integer identifier for the network
 
         """
+        super().__init__()
         self._unique_id = unique_id
         self._graph = nx.DiGraph() # network structure
 

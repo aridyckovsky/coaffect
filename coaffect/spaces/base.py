@@ -1,4 +1,4 @@
-""" Say something about Space class.
+""" Default Space class to define an environment's spatial physics.
 
 Base Class:
     Space
@@ -9,20 +9,21 @@ Base Class:
 import numpy
 import random
 
-# TODO: import a constant? from a defualts folder? or utils? hm...
+from ..utils.tracking_object import TrackingObject
 
-class Space(object):
+class Space(TrackingObject):
     """ Base class for Space.
 
     """
 
-    def __init__(self, domain=[(0.,0.)]):
+    def __init__(self, domain):
         """ Initialize Space.
 
         Args:
             domain: list of domain ranges given as tuple pairs of floats
 
         """
+        super().__init__()
         self._domain = domain
         #TODO: Implement iterator to use next() and run schedules
 

@@ -8,7 +8,7 @@ Base Class:
 
 import numpy
 
-from ..utils.tracking_object import TrackingObject
+from .tracking_object import TrackingObject
 
 class State(TrackingObject):
     """ Base class for State. Inherits TrackingObject's attributes.
@@ -28,11 +28,24 @@ class State(TrackingObject):
         self._measures = {l: d for (l,d) in measures.items()}
 
     def _set_measure(self, feature, value):
-        self._measures[feature] = value
-        self._set_last_modify()
+        """ Convenient setter for updating a single measure of a state.
+
+        Args:
+            feature (str)
+            value (instanceof feature)
+
+        """
+        if instanceof(value) is instanceof(self._measures[feature]):
+            self._measures[feature] = value
+            self._set_last_modify()
+        else:
+            raise ValueException('This is the wrong data type!')
 
     def _set_state(self, measures):
         """ Convenient setter for updating a state with multiple measures at once.
+
+        Args:
+            measures (dict)
 
         """
         for m in measures:

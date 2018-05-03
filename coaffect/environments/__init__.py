@@ -3,10 +3,6 @@
 
 Publicly Accessible Classes:
     Environment
-    Space
-    Time
-    Network
-    Group
 
 """
 
@@ -14,8 +10,8 @@ import datetime
 
 """ The following are imported into environment.py directly
 
-from .features.space import Space
-from .features.network import Network
+from ..spaces.base import Space
+from ..networks.base import Network
 
 """
 
