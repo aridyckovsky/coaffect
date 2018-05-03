@@ -16,10 +16,11 @@ import datetime
 import numpy
 import random
 
+from ..utils.tracking_object import TrackingObject
 from ..environments.base import Environment
 from ..history.base import History
 
-class Experiment(object):
+class Experiment(TrackingObject):
     """ Base class for Experiment framework.
 
     """
@@ -39,7 +40,7 @@ class Experiment(object):
             _schedule: schedule object
 
         """
-
+        super().__init__()
         self._experiment_id = experiment_id
         self._schedule = schedule
 

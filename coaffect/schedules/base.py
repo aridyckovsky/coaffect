@@ -14,7 +14,9 @@ import datetime
 import numpy
 import random
 
-class Schedule(object):
+from ..utils.tracking_object import TrackingObject
+
+class Schedule(TrackingObject):
     """ Base class for Schedule.
 
     """

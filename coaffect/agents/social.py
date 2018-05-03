@@ -1,11 +1,11 @@
-""" Create an EmotionalAgent as a participant for experiment(s).
+""" Create a SocialEmotionalAgent as a participant for experiment(s).
 
 """
 
-from .base import Agent
+from .emotional import EmotionalAgent
 
-class EmotionalAgent(Agent):
-    """ Create emotional agent by extending and overriding base class Agent.
+class SocialEmotionalAgent(EmotionalAgent):
+    """ Create social emotional agent by extending and overriding EmotionalAgent.
 
     """
 
@@ -21,7 +21,7 @@ class EmotionalAgent(Agent):
 
         #: Update argument to have required measures for an EmotionalAgent
         measures.update({
-            'arousal': 0
+            'identifications': {}
         })
 
         #: Inherit from Agent, including updated measures

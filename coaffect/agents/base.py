@@ -21,9 +21,10 @@ NOTES:
 import numpy
 import random
 
-from ..states.base import State
+from ..utils.tracking_object import TrackingObject
+from ..utils.state import State
 
-class Agent(object):
+class Agent(TrackingObject):
     """ Base class for Agent object.
 
     """
@@ -42,6 +43,7 @@ class Agent(object):
             _state (dict, as defined in State)
 
         """
+        super().__init__()
         self._unique_id = unique_id
         self._experiment = experiment
         self._state = State(measures)

@@ -27,6 +27,7 @@ from .environments.base import Environment
 #: Agents
 from .agents.base import Agent
 from .agents.emotional import EmotionalAgent
+from .agents.social import SocialEmotionalAgent
 
 #: Groups
 from .groups.base import Group

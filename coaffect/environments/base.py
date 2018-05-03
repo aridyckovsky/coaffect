@@ -11,10 +11,12 @@ Subclasses:
 import numpy
 import random
 
-from .features.space import Space
-from .features.network import Network
+from ..spaces.base import Space
+from ..networks.base import Network
 
-class Environment(object):
+from ..utils.tracking_object import TrackingObject
+
+class Environment(TrackingObject):
     """ Base class for Environment object.
 
     """
@@ -35,6 +37,7 @@ class Environment(object):
             network (dict)
 
         """
+        super().__init__()
         self._unique_id = unique_id
         self._name = name
 
