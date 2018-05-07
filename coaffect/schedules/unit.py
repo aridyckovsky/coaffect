@@ -15,6 +15,8 @@ class UnitSchedule(Schedule):
         """ Initialize a unit schedule instance.
 
         Args:
+            duration
+            unit
 
 
         """

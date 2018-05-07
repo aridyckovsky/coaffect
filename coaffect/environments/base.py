@@ -41,6 +41,9 @@ class Environment(TrackingObject):
         self._unique_id = unique_id
         self._name = name
 
+        self.agents = {}
+        self.groups = {}
+
         self.space = Space(space)
         self.network = Network(network)
 
@@ -52,7 +55,8 @@ class Environment(TrackingObject):
 
         """
         for agent in agents:
-            self.network.populate(agents)
+            pass
+        self.network.add_agents(agents)
 
 
     def step(self):

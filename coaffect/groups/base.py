@@ -19,7 +19,7 @@ class Group(TrackingObject):
 
     """
 
-    def __init__(self, unique_id, experiment, members=[], name=''):
+    def __init__(self, unique_id, experiment, measures={}, name=''):
         """ Initialize a uniquely identified group of members in an experiment,
             with the option to name it. Note that state is the 'collective state'
             of members, and members in a Group object are given as unique_ids of
@@ -28,13 +28,12 @@ class Group(TrackingObject):
         Args:
             unique_id (int): unique integer identifier
             experiment (obj): reference to experiment group is in
-            members (list): unique_ids of agents to include in group, if any
+            measures (dict): group measures for state (like collective emotion) 
             name (str): string identifier for convenient reference, if given
 
         Attrs:
             _unique_id (int)
             _experiment (obj)
-            _members (list)
             _name (str)
             _state (dict)
 
@@ -43,10 +42,9 @@ class Group(TrackingObject):
 
         self._unique_id = unique_id
         self._experiment = experiment
-        self._members = members
         self._name = name
 
-        self._state = State()
+        self._state = State(measures)
 
     def get_unique_id(self):
         """ Return unique_id.

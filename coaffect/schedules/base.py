@@ -21,9 +21,10 @@ class Schedule(TrackingObject):
 
     """
 
-    DAYS_TO_SECONDS = 60 * 60 * 24
-    HOURS_TO_SECONDS = 60 * 60
-    MINUTES_TO_SECONDS = 60
+    SECOND = 1
+    MINUTES_TO_SECONDS = 60 * SECOND
+    HOURS_TO_SECONDS = 60 * MINUTES_TO_SECONDS
+    DAYS_TO_SECONDS = 24 * HOURS_TO_SECONDS
 
     def __init__(self, duration, resolution=1):
         """ Initialize instance of Schedule.

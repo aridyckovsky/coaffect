@@ -13,47 +13,105 @@ import random
 from ..utils.tracking_object import TrackingObject
 
 class Network(TrackingObject):
-    """ Base class for Network.
+    """ Base class for Network, a representation of agents and groups
+        as nodes and edges in an environment.
 
     """
 
+    AGENT_NODE_TYPE = 'agent'
+    GROUP_NODE_TYPE = 'group'
+    SOCIAL_TIE_EDGE_TYPE = 'social_tie'
+    IDENTIFICATION_EDGE_TYPE = 'identification'
+
     def __init__(self, unique_id):
-        """ Initialize a NetworkX network of participant objects.
+        """ Initialize an empty NetworkX DiGraph.
 
         Args:
-            _id: unique integer identifier for the network
+            unique_id: unique str identifier for the network
 
         """
         super().__init__()
         self._unique_id = unique_id
         self._graph = nx.DiGraph() # network structure
 
-    def populate(self, agents=[], groups=[]):
-        """ Populate a network with nodes, such as agents and groups.
+    def add_agents(self, agents):
+        """ Populate graph with nodes representing agents by unique_ids.
 
         Args:
-            agents (list)
-            groups (list)
+            agents (list): list of string identifiers for agents
 
         """
-        if agents:
-            for agent in agents:
-                pass
-        if groups:
-            for group in groups:
-                pass
+        self._graph.add_nodes_from(agents, node_type=AGENT_NODE_TYPE)
 
-    def connect(self, ties):
-        """ Connect nodes of the network.
+    def remove_agents(self, agents):
+        """ Remove nodes representing agents from graph by unique_ids
 
         Args:
-            ties (list): List of networkx-appropriate edges
+            agents (list): list of string identifiers
 
         """
-        for tie in ties:
-            pass
+        self._graph.remove_nodes_from(agents)
 
-    #: Begin getters
+    def add_groups(self, groups):
+        """ Populate graph with nodes representing groups.
+
+        Args:
+            groups (list): list of string identifiers
+
+        """
+        self._graph.add_nodes_from(groups, node_type=GROUP_NODE_TYPE)
+
+    def remove_groups(self, groups):
+        """ Remove nodes representing groups from graph by unique_ids
+
+        Args:
+            groups (list): list of string identifiers
+
+        """
+        self._graph.remove_nodes_from(groups)
+
+    def add_social_ties(self, social_ties):
+        """ Connect agent nodes with directed edges in the graph.
+
+        Args:
+            social_ties
+
+        """
+        self._graph.add_edges_from(social_ties, edge_type=SOCIAL_TIE_EDGE_TYPE)
+
+    def remove_social_ties(self, social_ties):
+        """ Remove directed edges between agent nodes.
+
+        Args:
+            social_ties
+
+        """
+        self._graph.remove_edges_from(social_ties)
+
+    def add_social_ties(self, social_ties):
+        """ Connect agent nodes with directed edges in the graph.
+
+        Args:
+            social_ties
+
+        """
+        self._graph.add_edges_from(social_ties, edge_type=SOCIAL_TIE_EDGE_TYPE)
+
+    def remove_social_ties(self, identifications):
+        """ Remove directed edges between group nodes.
+
+        Args:
+            identifications
+
+        """
+        self._graph.remove_edges_from(identifications)
+
+    """
+
+    BEGIN GETTERS
+
+    """
+
     def get_unique_id(self):
         return self._unique_id
 

@@ -12,7 +12,7 @@ Note: Inspiration taken from Project Mesa's base model object.
 """
 
 #: Dependencies
-import datetime
+import datetime as dt
 import numpy
 import random
 
