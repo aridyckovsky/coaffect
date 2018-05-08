@@ -9,6 +9,14 @@ class EmotionalAgent(Agent):
 
     """
 
+    #: Default measure names
+    AROUSAL = 'arousal'
+
+    #: Default measures by name and value type
+    EMOTION_MEASURES = {
+        AROUSAL: 0
+    }
+
     def __init__(self, unique_id, experiment, measures={}):
         """ Extended subclass of Agent for an emotional agent for use in
             real and virtual experiments.
@@ -20,14 +28,12 @@ class EmotionalAgent(Agent):
         """
 
         #: Update argument to have required measures for an EmotionalAgent
-        measures.update({
-            'arousal': 0
-        })
+        measures.update(self.EMOTION_MEASURES)
 
-        #: Inherit from Agent, including updated measures
+        #: Inherit from parent Agent, including updated measures
         super().__init__(unique_id, experiment, measures)
 
-        self._memory = []
+        self.__memory = []
 
     def perceive(self, resolution, situation):
         """ Perceive a situation in the surrounding environment, including
@@ -42,12 +48,11 @@ class EmotionalAgent(Agent):
         """
         perception = {}
         state = self.get_state()
-        for feature, value in state:
-            #TODO do something to a situation that returns a perception value
-            perception[feature] = value
+        pass
 
     def express(self):
-        return self.get_state()['arousal']
+        curr_arousal = self.get_arousal()
+        pass
 
     def step(self, resolution, situation=None):
         """ Step updates an emotional agent by perceiving a situation,
@@ -59,6 +64,22 @@ class EmotionalAgent(Agent):
 
         """
         perception = self.perceive(situation)
-        for feature, value in perception:
-            measure = {feature: value + self.get_feature(feature)}
-            self._set_state(measure)
+        pass
+
+    """
+
+    BEGIN GETTERS
+
+    """
+
+    def get_arousal(self):
+        """ Get arousal measure.
+
+        """
+        return self.get_measure(self.AROUSAL)
+
+    def get_memory(self):
+        """ Get memory of agent.
+
+        """
+        return self.__memory

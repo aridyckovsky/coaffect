@@ -19,6 +19,16 @@ class Group(TrackingObject):
 
     """
 
+    #: Default measure names
+    MEMBER_IDS = 'member_ids'
+    COLLECTIVE_EMOTION = 'collection_emotion'
+
+    #: Default measures and type
+    BASE_MEASURES = {
+        MEMBER_IDS: [],
+        COLLECTIVE_EMOTION: 0.0
+    }
+
     def __init__(self, unique_id, experiment, measures={}, name=''):
         """ Initialize a uniquely identified group of members in an experiment,
             with the option to name it. Note that state is the 'collective state'
@@ -28,74 +38,57 @@ class Group(TrackingObject):
         Args:
             unique_id (int): unique integer identifier
             experiment (obj): reference to experiment group is in
-            measures (dict): group measures for state (like collective emotion) 
+            measures (dict): group measures for state (like collective emotion)
             name (str): string identifier for convenient reference, if given
 
         Attrs:
-            _unique_id (int)
             _experiment (obj)
-            _name (str)
-            _state (dict)
+            __unique_id (int)
+            __name (str)
+            __state (dict)
 
         """
         super().__init__()
 
-        self._unique_id = unique_id
         self._experiment = experiment
-        self._name = name
 
-        self._state = State(measures)
-
-    def get_unique_id(self):
-        """ Return unique_id.
-
-        """
-        return self._unique_id
-
-    def get_experiment(self):
-        """ Return experiment.
-
-        """
-        return self._experiment
-
-    def get_members(self):
-        """ Return current members.
-
-        """
-        return self._members
-
-    def get_state(self):
-        """ Return state of collective.
-
-        """
-        return self._state
-
-    def get_name(self):
-        """ Return name, if given, else pass.
-
-        """
-        return self._name if self._name else 'No Name'
-
-    def _set_members(self, members_to_remove, new_members):
-        """ Set list of members. First remove old members, then add new members.
-
-        """
-        for r in members_to_remove:
-            self._members.remove(r)
-        self._members = self._members + new_members
+        self.__unique_id = unique_id
+        self.__name = name
 
 
-    def _set_state(self):
-        """ Set a new state.
+        #: Extend any custom measures or empty dict with BASE_MEASURES
+        measures.update(self.BASE_MEASURES)
+        self.__state = State(measures)
 
-        """
-        pass
-
-    def _set_name(self, new_name):
+    def set_name(self, new_name):
         """ Set a new name for the group.
 
         """
-        self._name = new_name
+        self.__name = new_name
+
+    def add_member_id(self, member_id):
+        """ Add a new member's id to this group's state by appending to
+            state measure of membership.
+
+        Args:
+            member_id (str)
+
+        """
+        if member_id not in self.get_measure(self.MEMBER_IDS):
+            self.get_state().append_to_measure(self.MEMBER_IDS, member_id)
+        else:
+            print('That member is already in the group!')
+            #raise Exception('That member is already in the group!')
+
+    def add_member_ids(self, list_of_member_ids):
+        """ Add a list of new members by id to this group.
+
+        Args:
+            list_of_member_ids ([str])
+
+        """
+        for member_id in list_of_member_ids:
+            self.add_member_id(member_id)
 
     def step(self):
         """ Step method required for all groups. Override to use in
@@ -105,3 +98,51 @@ class Group(TrackingObject):
 
         """
         pass
+
+    """
+
+    BEGIN GETTERS
+
+    """
+
+    def get_unique_id(self):
+        """ Return unique_id.
+
+        """
+        return self.__unique_id
+
+    def get_name(self):
+        """ Return name, if given, else pass.
+
+        """
+        return self.__name if self._name else 'No Name'
+
+    def get_state(self):
+        """ Return state of group.
+
+        """
+        return self.__state
+
+    def get_measures(self):
+        """ Return measures in state.
+
+        """
+        return self.get_state().get_measures()
+
+    def get_measure(self, measure_name):
+        """ Return measure by name in state.
+
+        """
+        return self.get_state().get_measure(measure_name)
+
+    def get_member_ids(self):
+        """ Get list of member ids in current state.
+
+        """
+        return self.get_measure(self.MEMBER_IDS)
+
+    def get_collective_emotion(self):
+        """ Get collective emotion from current state.
+
+        """
+        return self.get_measure(self.COLLECTIVE_EMOTION)

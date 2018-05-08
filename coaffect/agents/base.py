@@ -29,6 +29,14 @@ class Agent(TrackingObject):
 
     """
 
+    #: Default measure names
+    POSITION = 'position'
+
+    #: Default measures and type
+    BASE_MEASURES = {
+        POSITION: ()
+    }
+
     def __init__(self, unique_id, experiment, measures={}):
         """ Initialize an agent with unique id and experiment agent is part of.
 
@@ -44,15 +52,33 @@ class Agent(TrackingObject):
 
         """
         super().__init__()
-        self._unique_id = unique_id
+
         self._experiment = experiment
-        self._state = State(measures)
+
+        self.__unique_id = unique_id
+
+        measures.update(self.BASE_MEASURES)
+        self.__state = State(measures)
+
+    def step(self):
+        """ Step method required for all agents.
+
+        Requirements: Define in subclasses.
+
+        """
+        pass
+
+    """
+
+    BEGIN GETTERS
+
+    """
 
     def get_unique_id(self):
         """ Get agent's unique identifier.
 
         """
-        return self.unique_id
+        return self.__unique_id
 
     def get_experiment(self):
         """ Get agent's experiment information, if available.
@@ -65,25 +91,22 @@ class Agent(TrackingObject):
             `get_measures` method.
 
         """
-        return self._state.get_measures()
+        return self.__state
 
-    def get_feature(self, feature):
-        return self.get_state()[feature]
-
-    def _set_state(self, measure):
-        """ Set agent's current state. Limited to access by subclasses,
-            not public method.
-
-        Args:
-            measure (dict): Single measure to update (e.g., {'arousal': 0})
+    def get_measures(self):
+        """ Return measures in state.
 
         """
-        self._state._set_measures(measure)
+        return self.get_state().get_measures()
 
-    def step(self):
-        """ Step method required for all agents.
-
-        Requirements: Define in subclasses.
+    def get_measure(self, measure_name):
+        """ Get a measure by name.
 
         """
-        pass
+        return self.get_state().get_measure(measure_name)
+
+    def get_position(self):
+        """ Get position of agent.
+
+        """
+        return self.get_measure(self.POSITION)

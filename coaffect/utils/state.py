@@ -27,6 +27,16 @@ class State(TrackingObject):
         super().__init__()
         self._measures = {l: d for (l,d) in measures.items()}
 
+    def append_to_measure(self, measure_name, new_value):
+        """ Append a new_value to a given measure_name in the state.
+
+        """
+        self._measures[measure_name].append(new_value)
+        self._set_last_modify()
+
+    def remove_from_measure(self, measure_name, new_value):
+        pass
+
     def _set_measure(self, feature, value):
         """ Convenient setter for updating a single measure of a state.
 
@@ -51,9 +61,22 @@ class State(TrackingObject):
         for m in measures:
             self._set_measure(m, measures[m])
 
+    """
+
+    BEGIN GETTERS
+
+    """
+
     def get_measures(self):
-        """ Get all measures from the state in standard format.
+        """ Get all measures in state.
 
         """
         self._set_last_access()
         return self._measures
+
+    def get_measure(self, measure_name):
+        """ Get measure by name.
+
+        """
+        self._set_last_access()
+        return self.get_measures()[measure_name]
