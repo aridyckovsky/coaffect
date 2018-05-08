@@ -12,9 +12,8 @@ import datetime
 
 from .base import Agent
 from .emotional import EmotionalAgent
-from .social import SocialEmotionalAgent
 
-__all__ = ["Agent", "EmotionalAgent", "SocialEmotionalAgent"]
+__all__ = ["Agent", "EmotionalAgent"]
 
 __title__ = 'agents'
 __version__ = '0.1.0'

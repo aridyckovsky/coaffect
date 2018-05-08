@@ -41,7 +41,7 @@ class Network(TrackingObject):
             agents (list): list of string identifiers for agents
 
         """
-        self._graph.add_nodes_from(agents, node_type=AGENT_NODE_TYPE)
+        self._graph.add_nodes_from(agents, node_type=self.AGENT_NODE_TYPE)
 
     def remove_agents(self, agents):
         """ Remove nodes representing agents from graph by unique_ids
@@ -59,7 +59,7 @@ class Network(TrackingObject):
             groups (list): list of string identifiers
 
         """
-        self._graph.add_nodes_from(groups, node_type=GROUP_NODE_TYPE)
+        self._graph.add_nodes_from(groups, node_type=self.GROUP_NODE_TYPE)
 
     def remove_groups(self, groups):
         """ Remove nodes representing groups from graph by unique_ids
@@ -77,7 +77,7 @@ class Network(TrackingObject):
             social_ties
 
         """
-        self._graph.add_edges_from(social_ties, edge_type=SOCIAL_TIE_EDGE_TYPE)
+        self._graph.add_edges_from(social_ties, edge_type=self.SOCIAL_TIE_EDGE_TYPE)
 
     def remove_social_ties(self, social_ties):
         """ Remove directed edges between agent nodes.
@@ -95,7 +95,7 @@ class Network(TrackingObject):
             social_ties
 
         """
-        self._graph.add_edges_from(social_ties, edge_type=SOCIAL_TIE_EDGE_TYPE)
+        self._graph.add_edges_from(social_ties, edge_type=self.SOCIAL_TIE_EDGE_TYPE)
 
     def remove_social_ties(self, identifications):
         """ Remove directed edges between group nodes.
@@ -115,23 +115,51 @@ class Network(TrackingObject):
     def get_unique_id(self):
         return self._unique_id
 
-    def get_graph(self, options):
-        """ Return the graph of a network. (Use options to return graph in
-            particular object type.)
-
-        Args:
-            options (dict)
-
-        """
+    def get_graph(self):
         return self._graph
 
-    def get_agents(self):
-        #: TODO specify agent nodes
-        return self._graph.nodes()
+    def get_nodes(self, node_type=None):
+        """ Get nodes of the graph with optional specificity by node type.
 
-    def get_groups(self):
-        #: TODO specify group nodes
-        return self._graph.nodes()
+        Args:
+            node_type (str): can be 'agent' or 'group'
 
-    def get_ties(self):
-        return self._graph.edges()
+        """
+        __nodes = self._graph.nodes.data()
+        if node_type != None:
+            return [node for node in __nodes if node[1]['node_type'] is node_type]
+        else:
+            return __nodes
+
+    def get_number_of_nodes(self, node_type=None):
+        """ Get number of nodes in the graph with optional specificity
+            by node type.
+
+        Args:
+            node_type (str): can be 'agent' or 'group'
+
+        """
+        return len(self.get_nodes(node_type))
+
+    def get_edges(self, edge_type=None):
+        """ Get edges of the graph with optional specificity by edge type.
+
+        Args:
+            edge_type (str): can be 'social_tie' or 'identification'
+
+        """
+        __edges = self._graph.edges.data()
+        if edge_type != None:
+            return [edge for edge in __edges if edge[1]['edge_type'] is edge_type]
+        else:
+            return __edges
+
+    def get_number_of_edges(self, edge_type=None):
+        """ Get number of edges in the graph with optional specificity
+            by edge type.
+
+        Args:
+            edge_type (str): can be 'social_tie' or 'identification'
+
+        """
+        return len(self.get_edges(edge_type))
