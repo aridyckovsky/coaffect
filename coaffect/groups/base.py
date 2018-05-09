@@ -84,15 +84,13 @@ class Group(TrackingObject):
         for member_id in list_of_member_ids:
             self.add_member_id(member_id)
 
-    def step(self):
-        """ Step method required for all groups. Override to use in
-            practice.
-
-        Requirements: Define in subclasses.
+    def update(self):
+        """ Update method required for all groups. Subclasses may (and should)
+            specialize and extend as necessary. Records current measures to
+            experiment's history.
 
         """
-        self.experiment.record(self.get_state())
-        pass
+        self.experiment.record(self.get_unique_id(), self.get_measures())
 
     """
 

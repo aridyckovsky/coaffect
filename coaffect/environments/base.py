@@ -21,7 +21,7 @@ class Environment(TrackingObject):
 
     """
 
-    def __init__(self, unique_id, space, network, name=''):
+    def __init__(self, unique_id, experiment, space, network, name=''):
         """ Initialize an environment.
 
         Args:
@@ -31,15 +31,16 @@ class Environment(TrackingObject):
             name: (optional) string identifier for convenient reference
 
         Attrs:
-            _unique_id (int)
-            _name (str)
+            __unique_id (str)
+            __name (str)
             space (dict)
             network (dict)
 
         """
         super().__init__()
-        self._unique_id = unique_id
-        self._name = name
+        self.__unique_id = unique_id
+        self.__name = name
+        self.experiment = experiment
 
         self.agents = {}
         self.groups = {}
@@ -47,42 +48,53 @@ class Environment(TrackingObject):
         self.space = Space(space)
         self.network = Network(network)
 
-    def populate(self, agents):
+    def add_agents(self, agents):
         """ Populate an environment instance with list of agents.
 
         Args:
-            agents(list): List of Agent objects
+            agents (list): List of Agent objects
 
         """
         for agent in agents:
-            pass
-        self.network.add_agents(agents)
+            agent_id = agent.get_unique_id()
+            self.agents[agent_id] = agent
+            self.network.add_agent(agent)
 
+    def add_groups(self, groups):
+        """ Populate an environment instance with list of groups.
 
-    def step(self):
-        """ Step method required for all environments. Override to use in
-            practice.
-
-        Requirements: Define in subclasses.
+        Args:
+            groups (list): List of Group objects
 
         """
-        pass
+        for group in groups:
+            group_id = group.get_unique_id()
+            self.groups[group_id] = group
+            self.network.add_group(groups)
+
+    def update(self):
+        """ Update method required for environments. Subclasses may (and should)
+            specialize and extend as necessary. Records current measures to
+            experiment's history.
+
+        """
+        self.experiment.record(self.get_measures())
 
     #: Begin getters
-    def get_id(self):
+    def get_unique_id(self):
         """ Return unique_id.
 
         """
-        return self._unique_id
+        return self.__unique_id
+
+    def get_name(self):
+        """ Return name, if given, else pass.
+
+        """
+        return self.__name if self.__name else 'No Name'
 
     def get_space(self):
         return self._space
 
     def get_network(self):
         return self._network
-
-    def get_name(self):
-        """ Return name, if given, else pass.
-
-        """
-        return self._name if self._name else 'No Name'

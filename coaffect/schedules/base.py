@@ -44,22 +44,38 @@ class Schedule(TrackingObject):
         }
 
         Attrs:
-            _start (int)
-            _state (int): current time in seconds
-            _duration (int): total number of seconds
-            _resolution (int): number of seconds to jump in iter
+            __start (int)
+            __curr (int): current time in seconds
+            __duration (int): total number of seconds
+            __resolution (int): number of seconds to jump in iter
 
         """
-        self._start = 0
-        self._state = 0
+        self.__start = 0
+        self.__curr = 0
 
-        self._duration = 0
-        self._duration += duration['days'] * self.DAYS_TO_SECONDS
-        self._duration += duration['hours'] * self.HOURS_TO_SECONDS
-        self._duration += duration['minutes'] * self.MINUTES_TO_SECONDS
-        self._duration += duration['seconds']
+        dur = 0
+        if 'days' in duration:
+            dur += duration['days'] * self.DAYS_TO_SECONDS
+        if 'hours' in duration:
+            dur += duration['hours'] * self.HOURS_TO_SECONDS
+        if 'minutes' in duration:
+            dur += duration['minutes'] * self.MINUTES_TO_SECONDS
+        if 'seconds' in duration:
+            dur += duration['seconds']
 
-        self._resolution = resolution
+        if dur is 0:
+            raise Exception('Cannot have a schedule with zero duration.')
+
+        self.__duration = dur
+        self.__resolution = resolution
+        self.__index = round(self.__curr / self.__resolution)
+
+    def __len__(self):
+        """ Custom length method to return number of time steps defined by
+            a schedule.
+
+        """
+        return round(self.get_duration() / self.get_resolution()) + 1
 
     def __iter__(self):
         """ Make Schedule object iterable.
@@ -74,10 +90,11 @@ class Schedule(TrackingObject):
             resolution (int): If defined, the number of time seconds to jump
 
         """
-        if self._state < self._duration:
-            _state = self._state
-            self._state += self._resolution
-            return _state
+        if self.__curr < self.__duration:
+            new = self.__curr
+            self.__curr += self.__resolution
+            self.__index = round(self.__curr / self.__resolution)
+            return new
         else:
             raise StopIteration()
 
@@ -85,8 +102,8 @@ class Schedule(TrackingObject):
         """ Reset the time back to start.
 
         """
-        _start = self._start
-        self._state = _start
+        new = self.__start
+        self.__curr = new
 
     #: Set Attributes
     def _set_resolution(self, res):
@@ -96,17 +113,22 @@ class Schedule(TrackingObject):
             res (int): desired new resolution
 
         """
-        self._resolution = res
+        self.__resolution = res
 
-    #: Get Attributes
-    def get_state(self):
-        return self._state
+    """
+
+    BEGIN GETTERS
+
+    """
+
+    def get_curr(self):
+        return self.__curr
+
+    def get_index(self):
+        return self.__index
 
     def get_duration(self):
-        return self._duration
+        return self.__duration
 
     def get_resolution(self):
-        return self._resolution
-
-    def get_duration(self):
-        return self._duration
+        return self.__resolution

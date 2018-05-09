@@ -40,27 +40,26 @@ class Agent(TrackingObject):
             measures: dict mapping string labels to data types
 
         Attrs:
-            _unique_id (int)
-            _experiment (dict)
-            _state (dict, as defined in State)
+            __unique_id (int)
+            __state (dict, as defined in State)
+            experiment (dict)
 
         """
         super().__init__()
 
-        self._experiment = experiment
-
         self.__unique_id = unique_id
+        self.experiment = experiment
 
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
-    def step(self):
-        """ Step method required for all agents.
-
-        Requirements: Define in subclasses.
+    def update(self):
+        """ Update method required for all agents. Subclasses may (and should)
+            specialize and extend as necessary. Records current measures to
+            experiment's history.
 
         """
-        pass
+        self.experiment.record(self.get_unique_id(), self.get_measures())
 
     """
 
@@ -78,7 +77,7 @@ class Agent(TrackingObject):
         """ Get agent's experiment information, if available.
 
         """
-        return self._experiment
+        return self.experiment
 
     def get_state(self):
         """ Get agent's current state be accessing State's

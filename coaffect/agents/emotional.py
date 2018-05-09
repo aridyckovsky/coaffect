@@ -17,7 +17,7 @@ class EmotionalAgent(Agent):
         AROUSAL: 0
     }
 
-    def __init__(self, unique_id, experiment, measures={}):
+    def __init__(self, unique_id, experiment, measures={}, max_arousal=10):
         """ Extended subclass of Agent for an emotional agent for use in
             real and virtual experiments.
 
@@ -32,6 +32,8 @@ class EmotionalAgent(Agent):
 
         #: Inherit from parent Agent, including updated measures
         super().__init__(unique_id, experiment, measures)
+
+        self.__max_arousal = max_arousal
 
     def perceive(self, resolution, situation):
         """ Perceive a situation in the surrounding environment, including
