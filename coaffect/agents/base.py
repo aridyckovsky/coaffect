@@ -29,13 +29,7 @@ class Agent(TrackingObject):
 
     """
 
-    #: Default measure names
-    POSITION = 'position'
-
-    #: Default measures and type
-    BASE_MEASURES = {
-        POSITION: ()
-    }
+    BASE_MEASURES = {}
 
     def __init__(self, unique_id, experiment, measures={}):
         """ Initialize an agent with unique id and experiment agent is part of.

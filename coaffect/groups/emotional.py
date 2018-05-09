@@ -1,20 +1,20 @@
-""" Create an EmotionalAgent as a participant for experiment(s).
+""" Create an EmotionalGroup as a participant for experiment(s).
 
 """
 
-from .base import Agent
+from .base import Group
 
-class EmotionalAgent(Agent):
+class EmotionalGroup(Group):
     """ Create emotional agent by extending and overriding base class Agent.
 
     """
 
     #: Default measure names
-    AROUSAL = 'arousal'
+    AROUSAL = 'collective_arousal'
 
     #: Default measures by name and value type
     EMOTIONAL_MEASURES = {
-        AROUSAL: 0
+        AROUSAL: 0.0
     }
 
     def __init__(self, unique_id, experiment, measures={}):
@@ -32,25 +32,6 @@ class EmotionalAgent(Agent):
 
         #: Inherit from parent Agent, including updated measures
         super().__init__(unique_id, experiment, measures)
-
-    def perceive(self, resolution, situation):
-        """ Perceive a situation in the surrounding environment, including
-            social and spatial factors.
-
-        Args:
-            situation (dict)
-
-        Returns:
-            perception (list): List of single dict mappings
-
-        """
-        perception = {}
-        state = self.get_state()
-        pass
-
-    def express(self):
-        curr_arousal = self.get_arousal()
-        pass
 
     def step(self, resolution, situation=None):
         """ Step updates an emotional agent by perceiving a situation,

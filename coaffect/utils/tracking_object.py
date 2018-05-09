@@ -2,6 +2,9 @@
     that require certain tracking references such as time of creation, last
     modification, etc.
 
+Public methods for all registered subclasses:
+    tracking_info: provides metadata collected by TrackingObject
+
 """
 
 from datetime import datetime
@@ -26,3 +29,17 @@ class TrackingObject(object):
 
         """
         self.__last_accessed_at = datetime.now()
+
+    def tracking_info(self):
+        """ Get tracking information (the private attributes to this object)
+            that acts as metadata for a given instance of a TrackingObject
+            subclass.
+
+        Returns a dictionary mapping of tracked meta-measures.
+
+        """
+        return dict(
+            created_at=self.__created_at,
+            last_modified_at=self.__last_modified_at,
+            last_accessed_at=self.__last_accessed_at
+        )

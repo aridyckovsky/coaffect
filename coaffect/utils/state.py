@@ -11,9 +11,20 @@ import numpy
 from .tracking_object import TrackingObject
 
 class State(TrackingObject):
-    """ Base class for State. Inherits TrackingObject's attributes.
+    """ Base class for State. State tracks and remembers a dict of measures,
+        which are modifiable attributes of classes that have State.
 
     """
+
+    #: Default modification types
+    ADD = 'add'
+    SUBTRACT = 'subtract'
+    MULT = 'multiply'
+    DIVIDE = 'divide'
+    APPEND = 'append'
+    REMOVE = 'remove'
+    RESET = 'reset'
+
     def __init__(self, measures):
         """ Initialize State, converting measures to State requirements.
 
@@ -21,45 +32,54 @@ class State(TrackingObject):
             measures (dict): A string-only dictionary mapping labels to types
 
         Attrs:
-            _measures (dict)
+            __measures (dict)
 
         """
         super().__init__()
-        self._measures = {l: d for (l,d) in measures.items()}
+        self.__measures = {name: val for (name,val) in measures.items()}
 
-    def append_to_measure(self, measure_name, new_value):
-        """ Append a new_value to a given measure_name in the state.
+    def _set_measure(self, name, new_val):
+        """ Set a measure to a new value.
 
         """
-        self._measures[measure_name].append(new_value)
+        self.__measures[name] = new_val
         self._set_last_modify()
 
-    def remove_from_measure(self, measure_name, new_value):
-        pass
-
-    def _set_measure(self, feature, value):
-        """ Convenient setter for updating a single measure of a state.
-
-        Args:
-            feature (str)
-            value (instanceof feature)
+    def modify_measure(self, name, mod_type, mod_val,):
+        """ Modify a measure with a specific modification type (operation) on
+            the current value and the modification value provided.
 
         """
-        if instanceof(value) is instanceof(self._measures[feature]):
-            self._measures[feature] = value
-            self._set_last_modify()
-        else:
-            raise ValueException('This is the wrong data type!')
+        curr_val = self.get_measure(name)
 
-    def _set_state(self, measures):
-        """ Convenient setter for updating a state with multiple measures at once.
+        #: Arithmetic operations for appropriate types
+        if mod_type == self.ADD:
+            new_val = curr_val + mod_val
+        if mod_type == self.SUBTRACT:
+            new_val = curr_val - mod_val
+        if mod_type == self.MULT:
+            new_val = curr_val * mod_val
+        if mod_type == self.DIVIDE:
+            if mod_val is not 0:
+                new_val = curr_val / mod_val
 
-        Args:
-            measures (dict)
+        #: List-like operations for appropriate types
+        if mod_type == self.APPEND:
+            curr_val.append(mod_val)
+            new_val = curr_val
+        if mod_type == self.REMOVE:
+            if mod_val in curr_val:
+                curr_val.remove(mod_val)
+                new_val = curr_val
+            else:
+                pass
 
-        """
-        for m in measures:
-            self._set_measure(m, measures[m])
+        #: Reset operation
+        if mod_type == self.RESET:
+            new_val = mod_val
+
+        #: Set the named measure to the new value
+        self._set_measure(name, new_val)
 
     """
 
@@ -72,11 +92,10 @@ class State(TrackingObject):
 
         """
         self._set_last_access()
-        return self._measures
+        return self.__measures
 
     def get_measure(self, measure_name):
         """ Get measure by name.
 
         """
-        self._set_last_access()
         return self.get_measures()[measure_name]

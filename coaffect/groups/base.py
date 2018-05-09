@@ -3,7 +3,8 @@
 Base Class:
     Group
 
-Subclasses:
+Provided subclasses:
+    EmotionalGroup
 
 """
 
@@ -19,14 +20,10 @@ class Group(TrackingObject):
 
     """
 
-    #: Default measure names
     MEMBER_IDS = 'member_ids'
-    COLLECTIVE_EMOTION = 'collection_emotion'
 
-    #: Default measures and type
     BASE_MEASURES = {
-        MEMBER_IDS: [],
-        COLLECTIVE_EMOTION: 0.0
+        MEMBER_IDS: []
     }
 
     def __init__(self, unique_id, experiment, measures={}, name=''):
@@ -50,13 +47,10 @@ class Group(TrackingObject):
         """
         super().__init__()
 
-        self._experiment = experiment
-
+        self.experiment = experiment
         self.__unique_id = unique_id
         self.__name = name
 
-
-        #: Extend any custom measures or empty dict with BASE_MEASURES
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
@@ -75,7 +69,7 @@ class Group(TrackingObject):
 
         """
         if member_id not in self.get_measure(self.MEMBER_IDS):
-            self.get_state().append_to_measure(self.MEMBER_IDS, member_id)
+            self.get_state().modify_measure(self.MEMBER_IDS, 'append', member_id)
         else:
             print('That member is already in the group!')
             #raise Exception('That member is already in the group!')
@@ -97,6 +91,7 @@ class Group(TrackingObject):
         Requirements: Define in subclasses.
 
         """
+        self.experiment.record(self.get_state())
         pass
 
     """
@@ -115,7 +110,13 @@ class Group(TrackingObject):
         """ Return name, if given, else pass.
 
         """
-        return self.__name if self._name else 'No Name'
+        return self.__name if self.__name else 'No Name'
+
+    def get_experiment_id(self):
+        """ Retur experiment id group is a part of for reference.
+
+        """
+        return self.experiment.get_unique_id()
 
     def get_state(self):
         """ Return state of group.
@@ -136,13 +137,7 @@ class Group(TrackingObject):
         return self.get_state().get_measure(measure_name)
 
     def get_member_ids(self):
-        """ Get list of member ids in current state.
+        """ Return member_ids measure.
 
         """
         return self.get_measure(self.MEMBER_IDS)
-
-    def get_collective_emotion(self):
-        """ Get collective emotion from current state.
-
-        """
-        return self.get_measure(self.COLLECTIVE_EMOTION)

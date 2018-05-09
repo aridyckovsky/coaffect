@@ -27,9 +27,12 @@ from .environments.base import Environment
 #: Agents
 from .agents.base import Agent
 from .agents.emotional import EmotionalAgent
+from .agents.spatial import SpatialAgent
+from .agents.remembering import RememberingAgent
 
 #: Groups
 from .groups.base import Group
+from .groups.emotional import EmotionalGroup
 
 #: Experiments
 from .experiments.base import Experiment
@@ -48,8 +51,11 @@ __all__ = [
 
     "Agent",
     "EmotionalAgent",
+    "SpatialAgent",
+    "RememberingAgent",
 
     "Group",
+    "EmotionalGroup",
 
     "Experiment",
     "Simulation",

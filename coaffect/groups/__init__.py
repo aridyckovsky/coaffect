@@ -3,14 +3,16 @@
 
 Publicly Accessible Classes:
     Group
+    EmotionalGroup
 
 """
 
 import datetime
 
 from .base import Group
+from .emotional import EmotionalGroup
 
-__all__ = ["Group"]
+__all__ = ["Group", "EmotionalGroup"]
 
 __title__ = 'groups'
 __version__ = '0.1.0'
