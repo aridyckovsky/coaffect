@@ -7,8 +7,6 @@ Base Class:
 Subclasses:
     Simulation (virtual experiment)
 
-Note: Inspiration taken from Project Mesa's base model object.
-
 """
 
 #: Dependencies
