@@ -103,3 +103,5 @@ class Agent(TrackingObject):
 
         """
         return self.get_measure(self.POSITION)
+
+        #amit was here
