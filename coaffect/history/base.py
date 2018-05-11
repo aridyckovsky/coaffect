@@ -33,7 +33,8 @@ class History(TrackingObject):
 
         super().__init__()
 
-        self.__data = [{} for i in range(indices)]
+        self.__indices = range(indices)
+        self.__data = [{} for i in self.__indices]
 
     def record(self, index, unique_id, measures):
         """ Record a given object's measures, mapped to a unique id, at a given
@@ -42,6 +43,12 @@ class History(TrackingObject):
         """
         self.__data[index][unique_id] = measures
         self._set_last_modify()
+
+    def reset(self):
+        """ Reset the history's data to original list of empty dicts.
+
+        """
+        self.__data = [{} for i in self.__indices]
 
     """
 
@@ -55,6 +62,13 @@ class History(TrackingObject):
         """
         self._set_last_access()
         return self.__data
+
+    def get_indices(self):
+        """ Get iterable indices.
+
+        """
+        self._set_last_access()
+        return self.__indices
 
     def get_record(self, index):
         """ Get record by index.

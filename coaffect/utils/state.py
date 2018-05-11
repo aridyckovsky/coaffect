@@ -45,7 +45,7 @@ class State(TrackingObject):
         self.__measures[name] = new_val
         self._set_last_modify()
 
-    def modify_measure(self, name, mod_type, mod_val,):
+    def modify_measure(self, name, mod_type, mod_val):
         """ Modify a measure with a specific modification type (operation) on
             the current value and the modification value provided.
 
@@ -94,8 +94,8 @@ class State(TrackingObject):
         self._set_last_access()
         return self.__measures
 
-    def get_measure(self, measure_name):
+    def get_measure(self, name):
         """ Get measure by name.
 
         """
-        return self.get_measures()[measure_name]
+        return self.get_measures()[name]

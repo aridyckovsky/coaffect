@@ -29,7 +29,7 @@ class Network(TrackingObject):
 
     #: Default state measures
     BASE_MEASURES = {
-        DENSITY = 0
+        DENSITY: 0
     }
 
     def __init__(self, unique_id, measures={}):
@@ -43,7 +43,7 @@ class Network(TrackingObject):
         self.__unique_id = unique_id
         self.__graph = nx.DiGraph() # network structure
 
-        measures.update(BASE_MEASURES)
+        measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
     def add_agents(self, agents):

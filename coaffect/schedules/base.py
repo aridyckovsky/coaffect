@@ -83,7 +83,7 @@ class Schedule(TrackingObject):
         """
         return self
 
-    def next(self):
+    def __next__(self):
         """ Define process of iteration, stop at end as final time.
 
         Args:
@@ -105,7 +105,6 @@ class Schedule(TrackingObject):
         new = self.__start
         self.__curr = new
 
-    #: Set Attributes
     def _set_resolution(self, res):
         """ Set resolution in seconds.
 

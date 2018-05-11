@@ -10,8 +10,8 @@ from .base import Experiment
 
 class Simulation(Experiment):
 
-    def __init__(self, experiment_id, schedule, seed=None):
+    def __init__(self, experiment_id, schedule, break_points=[], seed=None):
         """ Initialize simulation, a virtual experiment.
 
         """
-        super().__init__(experiment_id, schedule, seed)
+        super().__init__(experiment_id, schedule, break_points, seed)
