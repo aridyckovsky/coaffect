@@ -77,8 +77,10 @@ class Experiment(TrackingObject):
         else:
             self.__running = True
             for time in self.__schedule:
-                print('current time:', time)
-                if time in self.__break_points:
+                index = self.__schedule.get_index()
+                print('current step:', self.__schedule.get_index())
+                print('current time:', self.__schedule.get_curr())
+                if index in self.__break_points:
                     self.pause()
 
     def pause(self):

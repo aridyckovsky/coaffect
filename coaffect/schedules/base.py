@@ -93,7 +93,7 @@ class Schedule(TrackingObject):
         if self.__curr < self.__duration:
             new = self.__curr
             self.__curr += self.__resolution
-            self.__index = round(self.__curr / self.__resolution)
+            self.__index = round(new / self.__resolution)
             return new
         else:
             raise StopIteration()
