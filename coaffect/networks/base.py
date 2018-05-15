@@ -47,7 +47,7 @@ class Network(TrackingObject):
         self.__state = State(measures)
 
     def __repr__(self):
-        return 'Network({}, {})'.format(self.__unique_id)
+        return 'Network({})'.format(self.__unique_id)
 
     def add_agents(self, agents):
         """ Populate graph with nodes representing agents by unique_ids.
