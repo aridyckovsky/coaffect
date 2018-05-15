@@ -36,6 +36,15 @@ class History(TrackingObject):
         self.__indices = range(indices)
         self.__data = [{} for i in self.__indices]
 
+    def __repr__(self):
+        """ Output representation of History object with number of indices (len).
+
+        """
+        return 'History({})'.format(len(self.__indices))
+
+    def __len__(self):
+        return len(self.__indices)
+
     def record(self, index, unique_id, measures):
         """ Record a given object's measures, mapped to a unique id, at a given
             index.

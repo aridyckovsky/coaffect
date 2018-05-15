@@ -43,6 +43,7 @@ class Experiment(TrackingObject):
         super().__init__()
         self.__unique_id = unique_id
         self.__schedule = schedule
+        self.__index = self.__schedule.get_index()
         self.__running = False
         self.__paused = False
 
@@ -76,10 +77,15 @@ class Experiment(TrackingObject):
             print('Experiment is already running. Abort first in order to restart.')
         else:
             self.__running = True
+
             for time in self.__schedule:
                 index = self.__schedule.get_index()
-                print('current step:', self.__schedule.get_index())
-                print('current time:', self.__schedule.get_curr())
+
+                # TODO: provide update method for all objects with state
+                #self.__environment.update()
+                # TODO: record all updates to history
+
+                # pause after step completes if requested
                 if index in self.__break_points:
                     self.pause()
 
@@ -128,17 +134,6 @@ class Experiment(TrackingObject):
     def record(self, unique_id, measures):
         index = self.get_schedule().get_index()
         self.get_history().record(index, unique_id, measures)
-
-    def __iter__(self):
-        return self
-
-    def __next__(self):
-        """ Step method required for all experiments. Override to use in
-            practice. Note: subclasses will likely need a condition on
-            `self.running`
-
-        """
-        self.get_schedule().next()
 
     """
 

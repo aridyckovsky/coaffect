@@ -9,14 +9,19 @@ Public methods for all registered subclasses:
 
 from datetime import datetime
 
-class TrackingObject(object):
+class TrackingObject():
+    """ TrackingObject is a trackable object for metadata.
+
+    """
 
     def __init__(self):
-
         current_time = datetime.now()
         self.__created_at = current_time
         self.__last_modified_at = current_time
         self.__last_accessed_at = current_time
+
+    def __repr__(self):
+        return "TrackingObject()"
 
     def _set_last_modify(self):
         """ Set the time of last modification to the trackable object.
