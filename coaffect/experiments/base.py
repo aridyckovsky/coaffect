@@ -23,13 +23,12 @@ class Experiment(TrackingObject):
 
     """
 
-    def __init__(self, unique_id, schedule, break_points=[], seed=None):
+    def __init__(self, unique_id, schedule, seed=None):
         """ Initialize an experiment with optional seed parameter.
 
         Args:
-            experiment_id: integer identifier for experiment
+            unique_id: str identifier for experiment
             schedule: schedule instance
-            break_points: optional time steps to pause the experiment
             seed: optional seed for random number generation
 
         Attrs:
@@ -37,106 +36,63 @@ class Experiment(TrackingObject):
             __schedule: schedule object
             __running: boolean indicator to signal whether experiment is in progress
             __history: history object
-            __break_points: time steps
 
         """
         super().__init__()
-        self.__unique_id = unique_id
-        self.__schedule = schedule
-        self.__index = self.__schedule.get_index()
-        self.__running = False
-        self.__paused = False
+        self._unique_id = unique_id
+        self._schedule = schedule
+        self._index = self._schedule.get_index()
+        self._running = False
 
         #: Create experiment's history with number of steps provided by
         #: schedule's length method
-        self.__history = History(len(self.get_schedule()))
-
-        #: Define break points as empty list
-        self.__break_points = []
+        self._history = History(len(self.get_schedule()))
 
         # Handle seed for random and numpy random number generation
         if seed is None:
-            self.__seed = dt.datetime.now()
+            self._seed = dt.datetime.now()
         else:
-            self.__seed = seed
+            self._seed = seed
         random.seed(seed)
         numpy.random.seed(seed)
 
     def __repr__(self):
-        return 'Experiment({})'.format(self.__unique_id)
+        return 'Experiment({})'.format(self._unique_id)
 
-    def run(self, break_points=[]):
-        """ Run experiment for the duration of a schedule. If break points are
-            defined, the experiment will run through a break point, at which
-            the experiment will be paused until provided a command to continue.
-
-        Args:
-            break_points (list)
+    def run(self):
+        """ Run experiment. Must extend in subclasses for usage.
 
         """
-        if break_points:
-            self._set_break_points(break_points)
         if self.is_running() is True:
-            print('Experiment is already running. Abort first in order to restart.')
-        else:
-            self.__running = True
+            print('Experiment is already running. \
+                  Abort first in order to restart.')
+        self._running = True
+        while self.is_running():
+            # if data, record, otherwise, do nothing
+            pass
 
-            for time in self.__schedule:
-                index = self.__schedule.get_index()
-
-                # TODO: provide update method for all objects with state
-                #self.__environment.update()
-                # TODO: record all updates to history
-
-                # pause after step completes if requested
-                if index in self.__break_points:
-                    self.pause()
-
-    def pause(self):
-        """ Pause the experiment.
+    def stop(self):
+        """ Stop experiment.
 
         """
-        self.__paused = True
-        while self.is_paused():
-            #: Upause by using the unpause method
-            if self.is_paused() is False:
-                break
-
-    def unpause(self):
-        """ Unpause the experiment.
-
-        """
-        self.__paused = False
+        self._running = False
 
     def restart(self):
-        self.abort()
+        self.stop()
+        self.reset()
         self.run()
 
-    def abort(self):
-        """ Abort a current experiment run. History will be cleared by default.
+    def reset(self):
+        """ Reset a current experiment run. History will be cleared by default.
 
         """
-        self.__running = False
-        self.__paused = False
-        self.__schedule.reset()
-        self.__history.reset()
-
-    def _set_break_points(self, list_of_indices):
-        """ Set the break points at which the experiment will be paused.
-
-        """
-        for index in list_of_indices:
-            if index in self.get_history().get_indices() and index not in self.__break_points:
-                self.__break_points.append(index)
-            else:
-                raise Exception("One or more of your break points is out of range.")
-
-    def clear_break_points(self):
-        self.__break_points = []
+        self._running = False
+        self._schedule.reset()
+        self._history.reset()
 
     def record(self, unique_id, measures):
-        index = self.get_schedule().get_index()
-        self.get_history().record(index, unique_id, measures)
+        index = self._schedule.get_index()
+        self._history.record(index, unique_id, measures)
 
     """
 
@@ -145,16 +101,13 @@ class Experiment(TrackingObject):
     """
 
     def get_unique_id(self):
-        return self.__unique_id
+        return self._unique_id
 
     def get_schedule(self):
-        return self.__schedule
+        return self._schedule
 
     def get_history(self):
-        return self.__history
+        return self._history
 
     def is_running(self):
-        return self.__running
-
-    def is_paused(self):
-        return self.__paused
+        return self._running
