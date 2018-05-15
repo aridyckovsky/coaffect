@@ -70,6 +70,9 @@ class Schedule(TrackingObject):
         self.__resolution = resolution
         self.__index = round(self.__curr / self.__resolution)
 
+    def __repr__(self):
+        return 'Schedule({}, {})'.format(self.__duration, self.__resolution)
+
     def __len__(self):
         """ Custom length method to return number of time steps defined by
             a schedule.

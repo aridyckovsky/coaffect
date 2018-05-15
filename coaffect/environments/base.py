@@ -48,6 +48,9 @@ class Environment(TrackingObject):
         self.space = Space(space)
         self.network = Network(network)
 
+    def __repr__(self):
+        return 'Environment({})'.format(self.__unique_id)
+
     def add_agents(self, agents):
         """ Populate an environment instance with list of agents.
 

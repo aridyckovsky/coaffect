@@ -53,6 +53,9 @@ class Agent(TrackingObject):
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
+    def __repr__(self):
+        return 'Agent({})'.format(self.__unique_id)
+
     def update(self):
         """ Update method required for all agents. Subclasses may (and should)
             specialize and extend as necessary. Records current measures to

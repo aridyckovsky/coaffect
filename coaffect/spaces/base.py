@@ -24,24 +24,27 @@ class Space(TrackingObject):
 
         """
         super().__init__()
-        self._domain = domain
+        self.__domain = domain
         #TODO: Implement iterator to use next() and run schedules
+
+    def __repr__(self):
+        return 'Space({})'.format(self.__domain)
 
     def get_domain(self, axis=None):
         if axis:
             try:
-                 return self._domain[axis]
+                 return self.__domain[axis]
             except TypeError:
                 print("Not a valid axis!")
                 raise
         else:
-            return self._domain
+            return self.__domain
 
     def set_domain(self, new_domain):
         """ Set a completely new domain.
 
         """
-        self._domain = domain
+        self.__domain = domain
 
     def set_domain_axis(self, axis, new_axis_domain):
         """ Set a domain's axis.

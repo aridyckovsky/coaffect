@@ -54,6 +54,9 @@ class Group(TrackingObject):
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
+    def __repr__(self):
+        return 'Group({})'.format(self.__unique_id)
+
     def set_name(self, new_name):
         """ Set a new name for the group.
 

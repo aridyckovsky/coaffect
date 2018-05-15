@@ -21,14 +21,27 @@ class UnitSchedule(Schedule):
 
         """
         super().__init__(duration)
+        self.__unit = unit
 
-        if unit == 'second':
+        if self.__unit == 'second':
             self._set_resolution(self.SECOND)
-        elif unit == 'minute':
+        elif self.__unit == 'minute':
             self._set_resolution(self.MINUTES_TO_SECONDS)
-        elif unit == 'hour':
+        elif self.__unit == 'hour':
             self._set_resolution(self.HOURS_TO_SECONDS)
-        elif unit == 'day':
+        elif self.__unit == 'day':
             self._set_resolution(self.DAYS_TO_SECONDS)
         else:
             self._set_resolution(self.SECOND)
+
+    def __repr__(self):
+        return 'UnitSchedule({}, {})'.format(self.get_duration(), self.__unit)
+
+    """
+
+    BEGIN GETTERS
+
+    """
+
+    def get_unit(self):
+        return self.__unit

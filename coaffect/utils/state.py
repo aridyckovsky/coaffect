@@ -38,6 +38,9 @@ class State(TrackingObject):
         super().__init__()
         self.__measures = {name: val for (name,val) in measures.items()}
 
+    def __repr__(self):
+        return 'State({})'.format(self.__measures)
+
     def _set_measure(self, name, new_val):
         """ Set a measure to a new value.
 
