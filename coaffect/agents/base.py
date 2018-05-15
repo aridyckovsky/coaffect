@@ -47,14 +47,14 @@ class Agent(TrackingObject):
         """
         super().__init__()
 
-        self.__unique_id = unique_id
-        self.experiment = experiment
+        self._unique_id = unique_id
+        self._experiment = experiment
 
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
     def __repr__(self):
-        return 'Agent({})'.format(self.__unique_id)
+        return 'Agent({})'.format(self._unique_id)
 
     def update(self):
         """ Update method required for all agents. Subclasses may (and should)
@@ -74,13 +74,13 @@ class Agent(TrackingObject):
         """ Get agent's unique identifier.
 
         """
-        return self.__unique_id
+        return self._unique_id
 
     def get_experiment(self):
         """ Get agent's experiment information, if available.
 
         """
-        return self.experiment
+        return self._experiment
 
     def get_state(self):
         """ Get agent's current state be accessing State's

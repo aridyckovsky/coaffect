@@ -38,18 +38,18 @@ class Environment(TrackingObject):
 
         """
         super().__init__()
-        self.__unique_id = unique_id
-        self.__name = name
-        self.experiment = experiment
+        self._unique_id = unique_id
+        self._name = name
+        self._experiment = experiment
 
-        self.agents = {}
-        self.groups = {}
+        self._agents = {}
+        self._groups = {}
 
-        self.space = Space(space)
-        self.network = Network(network)
+        self._space = Space(space)
+        self._network = Network(network)
 
     def __repr__(self):
-        return 'Environment({})'.format(self.__unique_id)
+        return 'Environment({})'.format(self._unique_id)
 
     def add_agents(self, agents):
         """ Populate an environment instance with list of agents.
@@ -58,10 +58,10 @@ class Environment(TrackingObject):
             agents (list): List of Agent objects
 
         """
-        for agent in agents:
-            agent_id = agent.get_unique_id()
-            self.agents[agent_id] = agent
-            self.network.add_agent(agent)
+        for a in agents:
+            a_id = agent.get_unique_id()
+            self.agents[a_id] = a
+            self.network.add_agent(a)
 
     def add_groups(self, groups):
         """ Populate an environment instance with list of groups.
@@ -70,10 +70,10 @@ class Environment(TrackingObject):
             groups (list): List of Group objects
 
         """
-        for group in groups:
-            group_id = group.get_unique_id()
-            self.groups[group_id] = group
-            self.network.add_group(groups)
+        for g in groups:
+            g_id = g.get_unique_id()
+            self._groups[g_id] = g
+            self._network.add_group(g)
 
     def update(self):
         """ Update method required for environments. Subclasses may (and should)
@@ -81,20 +81,20 @@ class Environment(TrackingObject):
             experiment's history.
 
         """
-        self.experiment.record(self.get_measures())
+        self._experiment.record(self.get_measures())
 
     #: Begin getters
     def get_unique_id(self):
         """ Return unique_id.
 
         """
-        return self.__unique_id
+        return self._unique_id
 
     def get_name(self):
         """ Return name, if given, else pass.
 
         """
-        return self.__name if self.__name else 'No Name'
+        return self._name if self._name else 'No Name'
 
     def get_space(self):
         return self._space

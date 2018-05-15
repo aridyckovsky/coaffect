@@ -33,7 +33,7 @@ class EmotionalAgent(Agent):
         #: Inherit from parent Agent, including updated measures
         super().__init__(unique_id, experiment, measures)
 
-        self.__max_arousal = max_arousal
+        self._max_arousal = max_arousal
 
     def perceive(self, resolution, situation):
         """ Perceive a situation in the surrounding environment, including
@@ -52,7 +52,10 @@ class EmotionalAgent(Agent):
 
     def express(self):
         curr_arousal = self.get_arousal()
-        pass
+        if curr_arousal >= self.get_max_arousal():
+            pass
+        else:
+            pass
 
     def step(self, resolution, situation=None):
         """ Step updates an emotional agent by perceiving a situation,
@@ -77,3 +80,9 @@ class EmotionalAgent(Agent):
 
         """
         return self.get_measure(self.AROUSAL)
+
+    def get_max_arousal(self):
+        """ Get maximum arousal for agent.
+
+        """
+        return self._max_arousal
