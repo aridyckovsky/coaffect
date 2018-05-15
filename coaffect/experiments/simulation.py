@@ -49,15 +49,15 @@ class Simulation(Experiment):
             break_points (list)
 
         """
-        if self.is_running() is True:
-            print('Simulation is already running. Abort first in \
-                  order to restart.')
         if break_points:
             self._set_break_points(break_points)
+
+        if self.is_running() is True:
+            print('Simulation is already running. Stop first in \
+                  order to restart.')
         else:
             self._running = True
-
-            for time in self._schedule:
+            for point in self._schedule:
                 index = self._schedule.get_index()
 
                 # TODO: provide update method for all objects with state
@@ -67,16 +67,19 @@ class Simulation(Experiment):
                 # pause after step completes if requested
                 if index in self._break_points:
                     self.pause()
+                    while self.is_paused():
+                        phrase = input('Enter the word "unpause" to continue: ')
+                        if phrase == 'unpause':
+                            self.unpause()
+                            break
 
     def pause(self):
         """ Pause the experiment.
 
         """
         self._paused = True
-        while self.is_paused():
-            #: Upause by using the unpause method
-            if self.is_paused() is False:
-                break
+        print('Simulation paused at schedule index',
+                self.get_schedule().get_index())
 
     def unpause(self):
         """ Unpause the experiment.
@@ -103,7 +106,9 @@ class Simulation(Experiment):
 
         """
         for index in list_of_indices:
-            if (index in self.get_history().get_indices() and
+            if index in self._break_points:
+                pass
+            elif (index in self.get_history().get_indices() and
                     index not in self._break_points):
                 self._break_points.append(index)
             else:
@@ -118,6 +123,9 @@ class Simulation(Experiment):
     BEGIN GETTERS
 
     """
+
+    def get_break_points(self):
+        return self._break_points
 
     def is_paused(self):
         return self._paused
