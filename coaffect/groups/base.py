@@ -47,21 +47,21 @@ class Group(TrackingObject):
         """
         super().__init__()
 
-        self.experiment = experiment
-        self.__unique_id = unique_id
-        self.__name = name
+        self._experiment = experiment
+        self._unique_id = unique_id
+        self._name = name
 
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
     def __repr__(self):
-        return 'Group({})'.format(self.__unique_id)
+        return 'Group({})'.format(self._unique_id)
 
     def set_name(self, new_name):
-        """ Set a new name for the group.
+        """ Set a new name for the group. Simple convience only.
 
         """
-        self.__name = new_name
+        self._name = new_name
 
     def add_member_id(self, member_id):
         """ Add a new member's id to this group's state by appending to
@@ -93,7 +93,7 @@ class Group(TrackingObject):
             experiment's history.
 
         """
-        self.experiment.record(self.get_unique_id(), self.get_measures())
+        self._experiment.record(self.get_unique_id(), self.get_measures())
 
     """
 
@@ -105,19 +105,19 @@ class Group(TrackingObject):
         """ Return unique_id.
 
         """
-        return self.__unique_id
+        return self._unique_id
 
     def get_name(self):
         """ Return name, if given, else pass.
 
         """
-        return self.__name if self.__name else 'No Name'
+        return self._name if self._name else 'No Name'
 
     def get_experiment_id(self):
         """ Retur experiment id group is a part of for reference.
 
         """
-        return self.experiment.get_unique_id()
+        return self._experiment.get_unique_id()
 
     def get_state(self):
         """ Return state of group.

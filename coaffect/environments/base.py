@@ -83,7 +83,12 @@ class Environment(TrackingObject):
         """
         self._experiment.record(self.get_measures())
 
-    #: Begin getters
+    """
+
+    BEGIN GETTERS
+
+    """
+
     def get_unique_id(self):
         """ Return unique_id.
 

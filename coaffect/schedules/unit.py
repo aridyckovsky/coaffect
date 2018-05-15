@@ -18,7 +18,6 @@ class UnitSchedule(Schedule):
             duration
             unit
 
-
         """
         super().__init__(duration)
         self.__unit = unit
@@ -35,7 +34,8 @@ class UnitSchedule(Schedule):
             self._set_resolution(self.SECOND)
 
     def __repr__(self):
-        return 'UnitSchedule({}, {})'.format(self.get_duration(), self.__unit)
+        return 'UnitSchedule({}, {})'.format(self.get_duration(),
+                                             self.get_unit())
 
     """
 

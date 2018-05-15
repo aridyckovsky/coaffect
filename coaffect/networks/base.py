@@ -40,14 +40,14 @@ class Network(TrackingObject):
 
         """
         super().__init__()
-        self.__unique_id = unique_id
-        self.__graph = nx.DiGraph() # network structure
+        self._unique_id = unique_id
+        self._graph = nx.DiGraph() # network structure
 
         measures.update(self.BASE_MEASURES)
         self.__state = State(measures)
 
     def __repr__(self):
-        return 'Network({})'.format(self.__unique_id)
+        return 'Network({})'.format(self._unique_id)
 
     def add_agents(self, agents):
         """ Populate graph with nodes representing agents by unique_ids.
@@ -56,7 +56,7 @@ class Network(TrackingObject):
             agents (list): list of string identifiers for agents
 
         """
-        self.__graph.add_nodes_from(agents, node_type=self.AGENT_NODE_TYPE)
+        self._graph.add_nodes_from(agents, node_type=self.AGENT_NODE_TYPE)
 
     def remove_agents(self, agents):
         """ Remove nodes representing agents from graph by unique_ids
@@ -65,7 +65,7 @@ class Network(TrackingObject):
             agents (list): list of string identifiers
 
         """
-        self.__graph.remove_nodes_from(agents)
+        self._graph.remove_nodes_from(agents)
 
     def add_groups(self, groups):
         """ Populate graph with nodes representing groups.
@@ -74,7 +74,7 @@ class Network(TrackingObject):
             groups (list): list of string identifiers
 
         """
-        self.__graph.add_nodes_from(groups, node_type=self.GROUP_NODE_TYPE)
+        self._graph.add_nodes_from(groups, node_type=self.GROUP_NODE_TYPE)
 
     def remove_groups(self, groups):
         """ Remove nodes representing groups from graph by unique_ids
@@ -83,7 +83,7 @@ class Network(TrackingObject):
             groups (list): list of string identifiers
 
         """
-        self.__graph.remove_nodes_from(groups)
+        self._graph.remove_nodes_from(groups)
 
     def add_social_ties(self, social_ties):
         """ Connect agent nodes with directed edges in the graph.
@@ -92,7 +92,8 @@ class Network(TrackingObject):
             social_ties
 
         """
-        self.__graph.add_edges_from(social_ties, edge_type=self.SOCIAL_TIE_EDGE_TYPE)
+        self._graph.add_edges_from(social_ties,
+                                   edge_type=self.SOCIAL_TIE_EDGE_TYPE)
 
     def remove_social_ties(self, social_ties):
         """ Remove directed edges between agent nodes.
@@ -101,7 +102,7 @@ class Network(TrackingObject):
             social_ties
 
         """
-        self.__graph.remove_edges_from(social_ties)
+        self._graph.remove_edges_from(social_ties)
 
     def add_social_ties(self, social_ties):
         """ Connect agent nodes with directed edges in the graph.
@@ -110,7 +111,8 @@ class Network(TrackingObject):
             social_ties
 
         """
-        self.__graph.add_edges_from(social_ties, edge_type=self.SOCIAL_TIE_EDGE_TYPE)
+        self._graph.add_edges_from(social_ties,
+                                    edge_type=self.SOCIAL_TIE_EDGE_TYPE)
 
     def remove_social_ties(self, identifications):
         """ Remove directed edges between group nodes.
@@ -119,7 +121,7 @@ class Network(TrackingObject):
             identifications
 
         """
-        self.__graph.remove_edges_from(identifications)
+        self._graph.remove_edges_from(identifications)
 
     """
 
@@ -128,10 +130,10 @@ class Network(TrackingObject):
     """
 
     def get_unique_id(self):
-        return self.__unique_id
+        return self._unique_id
 
     def get_graph(self):
-        return self.__graph
+        return self._graph
 
     def get_nodes(self, node_type=None):
         """ Get nodes of the graph with optional specificity by node type.
@@ -140,9 +142,10 @@ class Network(TrackingObject):
             node_type (str): can be 'agent' or 'group'
 
         """
-        __nodes = self.__graph.nodes.data()
+        __nodes = self._graph.nodes.data()
         if node_type != None:
-            return [node for node in __nodes if node[1]['node_type'] is node_type]
+            return [node for node in __nodes
+                        if node[1]['node_type'] is node_type]
         else:
             return __nodes
 
@@ -163,9 +166,10 @@ class Network(TrackingObject):
             edge_type (str): can be 'social_tie' or 'identification'
 
         """
-        __edges = self.__graph.edges.data()
+        __edges = self._graph.edges.data()
         if edge_type != None:
-            return [edge for edge in __edges if edge[1]['edge_type'] is edge_type]
+            return [edge for edge in __edges
+                        if edge[1]['edge_type'] is edge_type]
         else:
             return __edges
 
