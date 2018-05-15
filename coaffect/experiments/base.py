@@ -62,6 +62,9 @@ class Experiment(TrackingObject):
         random.seed(seed)
         numpy.random.seed(seed)
 
+    def __repr__(self):
+        return 'Experiment({})'.format(self.__unique_id)
+
     def run(self, break_points=[]):
         """ Run experiment for the duration of a schedule. If break points are
             defined, the experiment will run through a break point, at which
