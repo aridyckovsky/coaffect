@@ -21,7 +21,10 @@ class Environment(TrackingObject):
 
     """
 
-    def __init__(self, unique_id, experiment, space, network, name=''):
+    AGENTS = 'agents'
+    GROUPS = 'groups'
+
+    def __init__(self, unique_id, space, network, name=''):
         """ Initialize an environment.
 
         Args:
@@ -81,7 +84,12 @@ class Environment(TrackingObject):
             experiment's history.
 
         """
-        self._experiment.record(self.get_measures())
+        #self._experiment.record(self.get_measures())
+        # do stuff, then return
+        return {
+            self.AGENTS: self.get_agents(),
+            self.GROUPS: self.get_groups()
+        }
 
     """
 
@@ -106,3 +114,9 @@ class Environment(TrackingObject):
 
     def get_network(self):
         return self._network
+
+    def get_agents(self):
+        return self._agents
+
+    def get_groups(self):
+        return self._groups

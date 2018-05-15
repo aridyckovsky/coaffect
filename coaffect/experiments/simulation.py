@@ -23,8 +23,10 @@ class Simulation(Experiment):
         Attrs:
             _unique_id: unique id
             _schedule: schedule object
-            _running: boolean indicator to signal whether experiment
+            _running: boolean indicator to signal whether simulation
                         is in progress
+            _paused: boolean indicator to signal whether simulation
+                        is paused
             _history: history object
             _break_points: time steps
 
@@ -49,6 +51,7 @@ class Simulation(Experiment):
             break_points (list)
 
         """
+
         if break_points:
             self._set_break_points(break_points)
 

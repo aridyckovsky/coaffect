@@ -16,7 +16,7 @@ class Space(TrackingObject):
 
     """
 
-    def __init__(self, domain):
+    def __init__(self, domain=[]):
         """ Initialize Space.
 
         Args:
