@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-""" Coaffect History Module
+""" Coaffect Networks Module
 
 Base Class:
-    History
+    Network
 
 """
 
 import datetime
 
-from .base_history import History
+from .base_network import Network
 
-__all__ = ["History"]
+__all__ = ["Network"]
 
-__title__ = 'history'
+__title__ = 'network'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

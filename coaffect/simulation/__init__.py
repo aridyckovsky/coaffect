@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-""" Coaffect History Module
+""" Coaffect Simulation Module
 
 Base Class:
-    History
+    Experiment
 
 """
 
 import datetime
 
-from .base_history import History
+from .base_simulation import Simulation
 
-__all__ = ["History"]
+__all__ = ["Simulation"]
 
-__title__ = 'history'
+__title__ = 'simulation'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

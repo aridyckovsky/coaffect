@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
-""" Coaffect History Module
+""" Coaffect Visuals Module
 
-Base Class:
-    History
+Core Objects:
+    Visuals
 
 """
 
 import datetime
 
-from .base_history import History
+from .base_visual import Visual
 
-__all__ = ["History"]
+__all__ = ["Visual"]
 
-__title__ = 'history'
+__title__ = 'visuals'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

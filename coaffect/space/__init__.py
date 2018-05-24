@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
-""" Coaffect History Module
+""" Coaffect Spaces Module
 
 Base Class:
-    History
+    Space
+
+Subclasses:
 
 """
 
 import datetime
 
-from .base_history import History
+from .base_space import Space
 
-__all__ = ["History"]
+__all__ = ["Space"]
 
-__title__ = 'history'
+__title__ = 'space'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

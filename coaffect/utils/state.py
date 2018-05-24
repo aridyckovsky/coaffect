@@ -8,9 +8,9 @@ Base Class:
 
 import numpy
 
-from .tracking_object import TrackingObject
+from .trackable_object import TrackableObject
 
-class State(TrackingObject):
+class State(TrackableObject):
     """ Base class for State. State tracks and remembers a dict of measures,
         which are modifiable attributes of classes that have State.
 

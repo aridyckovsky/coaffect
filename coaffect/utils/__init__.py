@@ -7,10 +7,10 @@ Utilities are not publicly accessible on the client side.
 
 import datetime
 
-from .tracking_object import TrackingObject
+from .trackable_object import TrackableObject
 from .state import State
 
-__all__ = ["TrackingObject", "State"]
+__all__ = ["TrackableObject", "State"]
 
 __title__ = 'utils'
 __version__ = '0.1.0'

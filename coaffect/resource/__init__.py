@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-""" Coaffect History Module
+""" Coaffect Resource Module
 
 Base Class:
     History
@@ -8,11 +8,11 @@ Base Class:
 
 import datetime
 
-from .base_history import History
+from .base_resource import Resource
 
-__all__ = ["History"]
+__all__ = ["Resource"]
 
-__title__ = 'history'
+__title__ = 'resource'
 __version__ = '0.1.0'
 __license__ = 'MIT'
 

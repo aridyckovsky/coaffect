@@ -11,35 +11,36 @@ import numpy
 import scipy
 
 #: Schedules
-from .schedules.base import Schedule
-from .schedules.unit import UnitSchedule
+from .schedule.base_schedule import Schedule
+from .schedule.unit import UnitSchedule
 
 #: Networks
-from .networks.base import Network
+from .network.base_network import Network
 
 #: Spaces
-from .spaces.base import Space
-from .spaces.space_1d import Space1D
+from .space.base_space import Space
 
 #: Environments
-from .environments.base import Environment
+from .environment.base_environment import Environment
+
+#: Resources
+from .resource.base_resource import Resource
 
 #: Agents
-from .agents.base import Agent
-from .agents.emotional import EmotionalAgent
-from .agents.spatial import SpatialAgent
-from .agents.remembering import RememberingAgent
+from .agent.base_agent import Agent
+from .agent.emotional import EmotionalAgent
+from .agent.spatial import SpatialAgent
+from .agent.remembering import RememberingAgent
 
 #: Groups
-from .groups.base import Group
-from .groups.emotional import EmotionalGroup
+from .group.base_group import Group
+from .group.emotional import EmotionalGroup
 
 #: Experiments
-from .experiments.base import Experiment
-from .experiments.simulation import Simulation
+from .simulation.base_simulation import Simulation
 
 #: History
-from .history.base import History
+from .history.base_history import History
 
 __all__ = [
     "Schedule",
@@ -48,6 +49,7 @@ __all__ = [
     "Environment",
     "Network",
     "Space",
+    "Resource",
 
     "Agent",
     "EmotionalAgent",
@@ -57,7 +59,6 @@ __all__ = [
     "Group",
     "EmotionalGroup",
 
-    "Experiment",
     "Simulation",
 
     "History",

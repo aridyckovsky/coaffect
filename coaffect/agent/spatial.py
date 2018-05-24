@@ -1,24 +1,25 @@
-""" Create a RememberingAgent as a participant for experiment(s).
+""" Create a SpatialAgent as a participant for experiment(s).
 
 """
 
 from .base_agent import Agent
 
-class RememberingAgent(Agent):
-    """ Create an agent with memory by extending and overriding base class Agent.
+class SpatialAgent(Agent):
+
+    """ Create a spatially aware agent by extending and overriding base class Agent.
 
     """
 
     #: Default measure names
-    MEMORY = 'memory'
+    POSITION = 'position'
 
     #: Default measures and type
-    REMEMBERING_MEASURES = {
-        MEMORY: []
+    SPATIAL_MEASURES = {
+        POSITION: ()
     }
 
     def __init__(self, unique_id, measures={}):
-        """ Extended subclass of Agent for an emotional agent for use in
+        """ Extended subclass of Agent for a spatially aware agent for use in
             real and virtual experiments.
 
         Args:
@@ -28,7 +29,7 @@ class RememberingAgent(Agent):
         """
 
         #: Update argument to have required measures for an EmotionalAgent
-        measures.update(self.REMEMBERING_MEASURES)
+        measures.update(self.SPATIAL_MEASURES)
 
         #: Inherit from parent Agent, including updated measures
         super().__init__(unique_id, measures)
@@ -39,8 +40,8 @@ class RememberingAgent(Agent):
 
     """
 
-    def get_memory(self):
-        """ Get memory measure.
+    def get_position(self):
+        """ Get position measure.
 
         """
-        return self.get_measure(self.MEMORY)
+        return self.get_measure(self.POSITION)
